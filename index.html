@@ -1,250 +1,536 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
-  <!-- ✅ SEO Optimization -->
-  <title>Limitless Mindset - Unlock Your Potential</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Limitless Mindset - Unlock Your Potential | Free Resources & Motivation</title>
   <meta name="description" content="Track your progress, access valuable resources, and join the Limitless Mindset community. Download free books on business, investing, self-help, and more.">
-  <meta name="keywords" content="limitless mindset, self-improvement, free books, business, investing, motivation, time management">
+  <meta name="keywords" content="limitless mindset, self-improvement, free books, business books, investing, motivation, time management, personal development">
   <meta name="author" content="Limitless Mindset">
   
-  <!-- ✅ Google Site Verification -->
-  <meta name="google-site-verification" content="d91j4l4stW2PehxB-jiYz2AiMGm9AylXt2nqNQZB628" />
+  <!-- Google Site Verification Tag -->
+  <meta name="google-site-verification" content="d91j2l4stW2PehxB-jiYz2AiMGm9AylXt2nqNQZB628" />
   
-  <!-- ✅ Open Graph Tags -->
-  <meta property="og:title" content="Limitless Mindset" />
-  <meta property="og:description" content="Track your progress, access valuable resources, and join the Limitless Mindset community." />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://ashukamar990.github.io/Limitless-motivation-final/" />
-  <meta property="og:image" content="https://ashukamar990.github.io/Limitless-motivation-final/thumbnail.jpg" />
+  <!-- Open Graph Tags -->
+  <meta property="og:title" content="Limitless Mindset - Unlock Your Potential">
+  <meta property="og:description" content="Free resources, motivational content, and progress tracking for personal growth">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://ashukamar990.github.io/Limitless-motivation-final/">
+  <meta property="og:image" content="https://ashukamar990.github.io/Limitless-motivation-final/thumbnail.jpg">
+  
+  <!-- Ads Scripts -->
+  <script type='text/javascript' src='//pl26931902.profitableratecpm.com/3c/db/f2/3cdbf295bee26f615d0d99adeb107283.js'></script>
+  <script type='text/javascript' src='//pl26931944.profitableratecpm.com/fd/69/f7/fd69f725dc6f41b88c230756c9ef8d07.js'></script>
   
   <style>
+    :root {
+      --primary: #e1306c;
+      --secondary: #405DE6;
+      --accent: #28a745;
+      --dark: #333;
+      --light: #f5f7fa;
+      --gray: #777;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
     body {
-      background: white;
-      color: black;
-      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to bottom, #ffffff, #f5f7fa);
+      color: #333;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       text-align: center;
       padding: 20px;
       max-width: 800px;
       margin: 0 auto;
-      background: linear-gradient(to bottom, #ffffff, #f5f7fa);
+      min-height: 100vh;
+      position: relative;
+      padding-bottom: 100px;
     }
+    
+    .header {
+      padding: 25px 0;
+      background: white;
+      border-radius: 15px;
+      margin: 15px 0 25px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    }
+    
     h1 {
-      font-size: 32px;
-      color: red;
+      font-size: 42px;
+      color: var(--primary);
       margin-bottom: 10px;
-      text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+      text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      background: linear-gradient(45deg, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
-    #dayCount {
-      font-size: 36px;
+    
+    .logo-container {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 15px;
+    }
+    
+    .logo {
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, var(--secondary), var(--primary));
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 40px;
       font-weight: bold;
-      margin: 10px 0;
-      color: #333;
+      box-shadow: 0 4px 10px rgba(64, 93, 230, 0.3);
     }
+    
+    .time-section {
+      background: white;
+      padding: 20px;
+      border-radius: 15px;
+      margin: 0 auto 30px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+      max-width: 600px;
+    }
+    
+    .time-wasted {
+      font-size: 22px;
+      color: #333;
+      margin: 10px 0;
+      font-weight: bold;
+      color: var(--primary);
+    }
+    
+    #dayCount {
+      font-size: 40px;
+      font-weight: bold;
+      margin: 15px 0;
+      color: #333;
+      background: linear-gradient(to right, var(--secondary), var(--primary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
     #monthCount {
       font-size: 26px;
       font-weight: bold;
-      margin: 10px 0;
+      margin: 15px 0;
       color: #555;
     }
+    
     #countdown {
       font-size: 26px;
-      margin: 15px auto;
-      padding: 14px;
+      margin: 20px auto;
+      padding: 15px;
       background: #f0f0f0;
       border-radius: 10px;
       display: inline-block;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+      font-weight: 600;
+      background: linear-gradient(to right, #f8f9fa, #e9ecef);
+      border: 1px solid #e0e0e0;
+      min-width: 350px;
     }
+    
     .action-links {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 15px;
-      margin: 25px 0;
+      gap: 20px;
+      margin: 35px 0;
     }
+    
     .action-links a {
-      padding: 12px 22px;
+      padding: 15px 25px;
       color: white;
       text-decoration: none;
       font-weight: bold;
-      border-radius: 10px;
+      border-radius: 12px;
       transition: all 0.3s ease;
       display: inline-block;
-      min-width: 250px;
-      font-size: 18px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+      min-width: 280px;
+      font-size: 20px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
     }
+    
+    .action-links a:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255,255,255,0.1);
+      z-index: -1;
+      transform: translateX(-100%);
+      transition: transform 0.3s ease;
+    }
+    
+    .action-links a:hover:before {
+      transform: translateX(0);
+    }
+    
     .action-links a:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
     }
+    
     .instagram-btn {
       background: linear-gradient(45deg, #405DE6, #5851DB, #833AB4, #C13584, #E1306C, #FD1D1D);
     }
+    
     .donate-btn {
       background: linear-gradient(to right, #28a745, #218838);
     }
-    .coming-soon {
-      font-size: 24px;
-      margin-top: 25px;
-      font-weight: bold;
-      color: #333;
-    }
-    .motivation {
-      margin-top: 35px;
-      text-align: left;
-      margin-left: auto;
-      margin-right: auto;
-    }
-    .motivation p {
-      font-size: 15px;
-      margin: 5px 0;
-      padding: 5px 10px;
-      border-left: 3px solid #e1306c;
-      background: #f9f9f9;
-      border-radius: 0 5px 5px 0;
-    }
-    .pdfs {
-      text-align: left;
-      margin: 30px auto;
-    }
-    .pdfs ul {
-      padding-left: 0;
-      list-style: none;
-    }
-    .pdfs li {
-      margin: 8px 0;
-      padding: 5px 0;
-      border-bottom: 1px solid #eee;
-    }
-    .pdfs a {
-      color: #007bff;
-      text-decoration: none;
-      font-size: 16px;
-      transition: all 0.2s ease;
-      display: block;
-      padding: 5px 0;
-    }
-    .pdfs a:hover {
-      color: #e1306c;
-      padding-left: 5px;
-    }
-    .quotes {
-      margin-top: 25px;
-      margin-left: auto;
-      margin-right: auto;
-      text-align: left;
-      font-style: italic;
-      background: #f9f9f9;
-      padding: 15px;
-      border-radius: 8px;
-      border-left: 4px solid #e1306c;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-    }
-    .quote-author {
-      font-weight: bold;
-      margin-top: 10px;
-      color: #333;
-    }
-    .category {
-      margin: 30px 0;
-      border: 1px solid #eaeaea;
-      border-radius: 10px;
-      padding: 15px;
-      background: white;
-      box-shadow: 0 3px 10px rgba(0,0,0,0.05);
-    }
-    .category-title {
-      font-size: 20px;
-      font-weight: bold;
-      color: #e1306c;
-      margin-bottom: 15px;
-      padding-bottom: 8px;
-      border-bottom: 2px solid #f0f0f0;
-      text-align: left;
-    }
-    .time-wasted {
-      font-size: 20px;
-      color: #333;
-      margin: 15px 0;
-      font-weight: bold;
-    }
-    .footer {
-      margin-top: 30px;
-      padding: 15px;
-      font-size: 14px;
-      color: #777;
-      border-top: 1px solid #eee;
-    }
+    
     .support-text {
       font-size: 16px;
       margin-top: 5px;
       color: #555;
+      font-style: italic;
+    }
+    
+    .resources-section {
+      background: white;
+      padding: 30px 20px;
+      border-radius: 15px;
+      margin: 30px 0;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    }
+    
+    .section-title {
+      text-align: center;
+      font-size: 32px;
+      margin-bottom: 30px;
+      color: var(--primary);
+      position: relative;
+      display: inline-block;
+    }
+    
+    .section-title:after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      height: 4px;
+      background: linear-gradient(to right, var(--secondary), var(--primary));
+      border-radius: 2px;
+    }
+    
+    .category {
+      margin: 35px 0;
+      border: 1px solid #eaeaea;
+      border-radius: 12px;
+      padding: 20px;
+      background: white;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+      transition: transform 0.3s ease;
+    }
+    
+    .category:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+    }
+    
+    .category-title {
+      font-size: 24px;
+      font-weight: bold;
+      color: var(--primary);
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid #f0f0f0;
+      text-align: left;
+      display: flex;
+      align-items: center;
+    }
+    
+    .category-title:before {
+      content: '';
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--primary);
+      margin-right: 12px;
+    }
+    
+    .pdfs ul {
+      padding-left: 0;
+      list-style: none;
+    }
+    
+    .pdfs li {
+      margin: 12px 0;
+      padding: 8px 0;
+      border-bottom: 1px solid #eee;
+      transition: all 0.2s ease;
+    }
+    
+    .pdfs li:hover {
+      background: #f9f9f9;
+      border-radius: 6px;
+    }
+    
+    .pdfs a {
+      color: #007bff;
+      text-decoration: none;
+      font-size: 18px;
+      transition: all 0.2s ease;
+      display: block;
+      padding: 8px 15px;
+      position: relative;
+      padding-left: 35px;
+    }
+    
+    .pdfs a:before {
+      content: '📚';
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 20px;
+    }
+    
+    .pdfs a:hover {
+      color: var(--primary);
+      padding-left: 40px;
+    }
+    
+    .quotes-section {
+      background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+      color: white;
+      padding: 30px;
+      border-radius: 15px;
+      margin: 40px 0;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    }
+    
+    .quote {
+      margin: 25px 0;
+      padding: 20px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 10px;
+      border-left: 4px solid white;
+      text-align: left;
+    }
+    
+    .quote-author {
+      font-weight: bold;
+      margin-top: 15px;
+      color: white;
+      font-size: 18px;
+      text-align: right;
+      font-style: normal;
+    }
+    
+    .motivation-section {
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      margin: 40px 0;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+      text-align: left;
+    }
+    
+    .motivation-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+    
+    .motivation-card {
+      background: #f9f9f9;
+      padding: 20px;
+      border-radius: 10px;
+      border-left: 4px solid var(--primary);
+      transition: all 0.3s ease;
+    }
+    
+    .motivation-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      background: white;
+    }
+    
+    .coming-soon {
+      font-size: 32px;
+      margin: 40px 0;
+      font-weight: bold;
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      position: relative;
+      display: inline-block;
+      padding: 15px 40px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      background: linear-gradient(45deg, #f3ec78, #af4261);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      border: 2px solid #af4261;
+    }
+    
+    .coming-soon:after {
+      content: '🎯';
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 40px;
+    }
+    
+    .footer {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      margin-top: 50px;
+      padding: 25px;
+      font-size: 16px;
+      color: var(--gray);
+      border-top: 1px solid #eee;
+      background: white;
+    }
+    
+    .seo-tag {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: var(--accent);
+      color: white;
+      padding: 5px 10px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: bold;
+    }
+    
+    @media (max-width: 600px) {
+      body {
+        padding: 15px;
+      }
+      
+      h1 {
+        font-size: 32px;
+      }
+      
+      #countdown {
+        font-size: 20px;
+        min-width: 280px;
+        padding: 12px;
+      }
+      
+      .action-links a {
+        min-width: 90%;
+        font-size: 18px;
+        padding: 12px 20px;
+      }
+      
+      .motivation-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .category-title {
+        font-size: 20px;
+      }
     }
   </style>
 </head>
 <body>
-  <h1>Limitless Mindset</h1>
-  <div class="time-wasted">You have already wasted this much time</div>
-  <div id="dayCount">Day 1 of 365</div>
-  <div id="monthCount">You have wasted 0 months of 12 months</div>
-  <div id="countdown">Loading countdown...</div>
+  <div class="seo-tag">SEO Optimized</div>
+  
+  <div class="header">
+    <div class="logo-container">
+      <div class="logo">LM</div>
+    </div>
+    <h1>Limitless Mindset</h1>
+    <p>Unlock your potential and transform your life</p>
+  </div>
+  
+  <div class="time-section">
+    <div class="time-wasted">Your time is precious. Don't waste it!</div>
+    <div id="dayCount">Day 1 of 365</div>
+    <div id="monthCount">You have wasted 0 months of 12 months</div>
+    <div id="countdown">⏳ Year ends in: 00d 00h 00m 00s</div>
+  </div>
 
-  <div class="pdfs">
+  <div class="resources-section">
+    <h2 class="section-title">Free Resources</h2>
+    
     <div class="category">
-      <div class="category-title">1. Business, Money & Investing</div>
-      <ul>
-        <li><a href="https://drive.google.com/uc?export=download&id=1-CKkHZBpfaFsolx2zZhAhVDcYk_oQvIj" target="_blank">100 Great Business Ideas (Hindi)</a></li>
-        <li><a href="https://drive.google.com/uc?export=download&id=1-2VcCmg4dd6CDtTiuJkZilszEzAhFs1s" target="_blank">Rich Dad Poor Dad</a></li>
-        <li><a href="https://drive.google.com/uc?export=download&id=1-YIyRD-z-UGLH4p2XCnUSofZ4S0uPS27" target="_blank">Think and Grow Rich (Hindi & English)</a></li>
-        <li><a href="https://drive.google.com/uc?export=download&id=1-MCEoxARS7fL6s7D8VAerUw3iDpDUz7W" target="_blank">The Psychology of Money</a></li>
-        <li><a href="https://drive.google.com/uc?export=download&id=1-URsoOEK71cY8clB0vn5UXkQ99haDnoS" target="_blank">The Intelligent Investor (Hindi)</a></li>
-        <li><a href="https://drive.google.com/uc?export=download&id=1-V428LO8mYpKrMxLJvexilSitMgI4Fpw" target="_blank">Warren Buffett – Ultimate Guide to Investing</a></li>
-        <li><a href="https://drive.google.com/uc?export=download&id=1-nZuL4g0XC3FrBqBUaQsRIbgbJ_uwU1E" target="_blank">FAKE – Robert Kiyosaki</a></li>
-        <li><a href="https://drive.google.com/uc?export=download&id=106DnTdAC7aicceVHk_YbfyVLAJ6H8RoL" target="_blank">Crushing It! – Entrepreneur Guide</a></li>
-      </ul>
+      <div class="category-title">Business, Money & Investing</div>
+      <div class="pdfs">
+        <ul>
+          <li><a href="https://drive.google.com/uc?export=download&id=1-CKkHZBpfaFsolx2zZhAhVDcYk_oQvIj" target="_blank">100 Great Business Ideas (Hindi)</a></li>
+          <li><a href="https://drive.google.com/uc?export=download&id=1-2VcCmg4dd6CDtTiuJkZilszEzAhFs1s" target="_blank">Rich Dad Poor Dad</a></li>
+          <li><a href="https://drive.google.com/uc?export=download&id=1-YIyRD-z-UGLH4p2XCnUSofZ4S0uPS27" target="_blank">Think and Grow Rich (Hindi & English)</a></li>
+          <li><a href="https://drive.google.com/uc?export=download&id=1-MCEoxARS7fL6s7D8VAerUw3iDpDUz7W" target="_blank">The Psychology of Money</a></li>
+          <li><a href="https://drive.google.com/uc?export=download&id=1-URsoOEK71cY8clB0vn5UXkQ99haDnoS" target="_blank">The Intelligent Investor (Hindi)</a></li>
+          <li><a href="https://drive.google.com/uc?export=download&id=1-V428LO8mYpKrMxLJvexilSitMgI4Fpw" target="_blank">Warren Buffett - Ultimate Guide to Investing</a></li>
+          <li><a href="https://drive.google.com/uc?export=download&id=1-nZuL4g0XC3FrBqBUaQsRIbgbJ_uwU1E" target="_blank">FAKE - Robert Kiyosaki</a></li>
+          <li><a href="https://drive.google.com/uc?export=download&id=106DnTdAC7aicceVHk_YbfyVLAJ6H8RoL" target="_blank">Crushing It! - Entrepreneur Guide</a></li>
+        </ul>
+      </div>
     </div>
 
     <div class="category">
-      <div class="category-title">2. Social Media & Marketing</div>
-      <ul>
-        <li><a href="https://drive.google.com/uc?export=download&id=1-ZLq7hMsKQZCsrnsBrERFTsVwrlr_Bpo" target="_blank">Instagram Marketing Guide (Zero to 10k Followers)</a></li>
-        <li><a href="https://drive.google.com/uc?export=download&id=1-tUw2TO0HtQgJMb_bhgscVlVbYDHmp_I" target="_blank">Instagram Marketing for Business (PDFDrive)</a></li>
-        <li><a href="https://drive.google.com/uc?export=download&id=103blHNtRxgt4BuvnJpn5kkUFK43INN--" target="_blank">Social Media – Art of Marketing (YouTube/Insta etc.)</a></li>
-      </ul>
+      <div class="category-title">Social Media & Marketing</div>
+      <div class="pdfs">
+        <ul>
+          <li><a href="https://drive.google.com/uc?export=download&id=1-ZLq7hMsKQZCsrnsBrERFTsVwrlr_Bpo" target="_blank">Instagram Marketing Guide (Zero to 10k Followers)</a></li>
+          <li><a href="https://drive.google.com/uc?export=download&id=1-tUw2TO0HtQgJMb_bhgscVlVbYDHmp_I" target="_blank">Instagram Marketing for Business</a></li>
+          <li><a href="https://drive.google.com/uc?export=download&id=103blHNtRxgt4BuvnJpn5kkUFK43INN--" target="_blank">Social Media - Art of Marketing</a></li>
+        </ul>
+      </div>
     </div>
 
     <div class="category">
-      <div class="category-title">3. Self-Help & Motivation</div>
-      <ul>
-        <li><a href="https://drive.google.com/uc?export=download&id=1-JClzDX2hEHAU4Fn_vkfIvYjwjdvM6_s" target="_blank">12 Rules for Life (Hindi)</a></li>
-        <li><a href="https://drive.google.com/uc?export=download&id=1-Sln8cqOkt-L6aiKEbBG7NaB6Zh2bGRr" target="_blank">Elon Musk ke Success Principles (Hindi)</a></li>
-      </ul>
+      <div class="category-title">Self-Help & Motivation</div>
+      <div class="pdfs">
+        <ul>
+          <li><a href="https://drive.google.com/uc?export=download&id=1-JClzDX2hEHAU4Fn_vkfIvYjwjdvM6_s" target="_blank">12 Rules for Life (Hindi)</a></li>
+          <li><a href="https://drive.google.com/uc?export=download&id=1-Sln8cqOkt-L6aiKEbBG7NaB6Zh2bGRr" target="_blank">Elon Musk ke Success Principles (Hindi)</a></li>
+        </ul>
+      </div>
     </div>
 
     <div class="category">
-      <div class="category-title">4. Finance & Money Management</div>
-      <ul>
-        <li><a href="https://drive.google.com/uc?export=download&id=10-zRdXasnY8puyT-OaFRHO4zTbFj2x93" target="_blank">Let’s Talk Money – Monika Halan</a></li>
-      </ul>
+      <div class="category-title">Finance & Money Management</div>
+      <div class="pdfs">
+        <ul>
+          <li><a href="https://drive.google.com/uc?export=download&id=10-zRdXasnY8puyT-OaFRHO4zTbFj2x93" target="_blank">Let's Talk Money - Monika Halan</a></li>
+        </ul>
+      </div>
     </div>
 
     <div class="category">
-      <div class="category-title">5. Academics & Study</div>
-      <ul>
-        <li><a href="https://drive.google.com/uc?export=download&id=1-C8T9DsGAdq6UGHKTbLf_-5ypRTsmCKb" target="_blank">Class 11-12 Economics</a></li>
-      </ul>
+      <div class="category-title">Academics & Study</div>
+      <div class="pdfs">
+        <ul>
+          <li><a href="https://drive.google.com/uc?export=download&id=1-C8T9DsGAdq6UGHKTbLf_-5ypRTsmCKb" target="_blank">Class 11-12 Economics</a></li>
+        </ul>
+      </div>
     </div>
 
     <div class="category">
-      <div class="category-title">6. Religion & Spirituality</div>
-      <ul>
-        <li><a href="https://drive.google.com/uc?export=download&id=1-90hAP5bicpjQkCnfsuAqtoONi522Aus" target="_blank">Bhagavad Gita (Hindi)</a></li>
-        <li><a href="https://drive.google.com/uc?export=download&id=1-JRB7XxwKwo2uPq_Ir_BnnEEg3MwVcUZ" target="_blank">Aakhri Kitaab</a></li>
-      </ul>
+      <div class="category-title">Religion & Spirituality</div>
+      <div class="pdfs">
+        <ul>
+          <li><a href="https://drive.google.com/uc?export=download&id=1-90hAP5bicpjQkCnfsuAqtoONi522Aus" target="_blank">Bhagavad Gita (Hindi)</a></li>
+          <li><a href="https://drive.google.com/uc?export=download&id=1-JRB7XxwKwo2uPq_Ir_BnnEEg3MwVcUZ" target="_blank">Aakhri Kitaab</a></li>
+        </ul>
+      </div>
     </div>
   </div>
 
@@ -254,88 +540,191 @@
     </a>
     
     <a href="https://rzp.io/rzp/9ynTVZs" target="_blank" class="donate-btn">
-      ❤️ Support Our Mission
+      ❤️ Donation
     </a>
     <div class="support-text">Your donation helps us create more valuable content</div>
   </div>
 
-  <div class="quotes">
+  <div class="quotes-section">
+    <h2 class="section-title" style="color: white;">Inspirational Quotes</h2>
+    
     <div class="quote">
-      <strong>— Elon Musk</strong><br>
       "Agar koi kaam ya sapna aapke liye sach mein zaroori hai, to chahe har haal aapke khilaaf ho — aap use kar ke hi rahenge."
+      <div class="quote-author">— Elon Musk</div>
     </div>
+    
     <div class="quote">
-      <strong>— Steve Jobs</strong><br>
       "Hamesha kuch naya seekhne ki bhukh rakho, aur daring banaye rakho — log kya sochenge, isse mat daro."
+      <div class="quote-author">— Steve Jobs</div>
     </div>
   </div>
 
-  <div class="coming-soon">🎯 2026 Coming Soon</div>
-
-  <div class="motivation">
-    <p>1. Success is no accident.</p>
-    <p>2. Push yourself, because no one else is going to do it for you.</p>
-    <p>3. Great things never come from comfort zones.</p>
-    <p>4. Dream it. Wish it. Do it.</p>
-    <p>5. Success doesn't just find you. You have to go out and get it.</p>
-    <p>6. Don't stop when you're tired. Stop when you're done.</p>
-    <p>7. Wake up with determination. Go to bed with satisfaction.</p>
-    <p>8. Do something today that your future self will thank you for.</p>
-    <p>9. Little things make big days.</p>
-    <p>10. It's going to be hard, but hard does not mean impossible.</p>
-    <p>11. Don't wait for opportunity. Create it.</p>
-    <p>12. You are capable of amazing things.</p>
-    <p>13. Dream big and dare to fail.</p>
-    <p>14. Action is the foundational key to all success.</p>
-    <p>15. Stay focused and never give up.</p>
-    <p>16. Difficult roads often lead to beautiful destinations.</p>
-    <p>17. Don't be afraid to give up the good to go for the great.</p>
-    <p>18. Believe you can and you're halfway there.</p>
-    <p>19. Nothing worth having comes easy.</p>
-    <p>20. Work hard in silence, let success make the noise.</p>
+  <div class="motivation-section">
+    <h2 class="section-title">Daily Motivation</h2>
+    
+    <div class="motivation-grid">
+      <div class="motivation-card">
+        <p>1. Success is no accident.</p>
+        <p>2. Push yourself, because no one else is going to do it for you.</p>
+        <p>3. Great things never come from comfort zones.</p>
+        <p>4. Dream it. Wish it. Do it.</p>
+        <p>5. Success doesn't just find you. You have to go out and get it.</p>
+        <p>6. Don't stop when you're tired. Stop when you're done.</p>
+        <p>7. Wake up with determination. Go to bed with satisfaction.</p>
+        <p>8. Do something today that your future self will thank you for.</p>
+        <p>9. Little things make big days.</p>
+        <p>10. It's going to be hard, but hard does not mean impossible.</p>
+      </div>
+      
+      <div class="motivation-card">
+        <p>11. Don't wait for opportunity. Create it.</p>
+        <p>12. You are capable of amazing things.</p>
+        <p>13. The harder you work for something, the greater you'll feel when you achieve it.</p>
+        <p>14. Don't stop when you're tired. Stop when you're done.</p>
+        <p>15. Wake up with determination. Go to bed with satisfaction.</p>
+        <p>16. Do something today that your future self will thank you for.</p>
+        <p>17. Little things make big days.</p>
+        <p>18. It's going to be hard, but hard does not mean impossible.</p>
+        <p>19. Don't wait for opportunity. Create it.</p>
+        <p>20. You are capable of amazing things.</p>
+      </div>
+      
+      <div class="motivation-card">
+        <p>21. The harder you work for something, the greater you'll feel when you achieve it.</p>
+        <p>22. Success is walking from failure to failure with no loss of enthusiasm.</p>
+        <p>23. The secret of getting ahead is getting started.</p>
+        <p>24. The only limit to our realization of tomorrow is our doubts of today.</p>
+        <p>25. You don't have to be great to start, but you have to start to be great.</p>
+        <p>26. The expert in anything was once a beginner.</p>
+        <p>27. Your only limit is your mind.</p>
+        <p>28. The key to success is to focus on goals, not obstacles.</p>
+        <p>29. Dream big and dare to fail.</p>
+        <p>30. Success is not the key to happiness. Happiness is the key to success.</p>
+      </div>
+      
+      <div class="motivation-card">
+        <p>31. If you love what you are doing, you will be successful.</p>
+        <p>32. The only place where success comes before work is in the dictionary.</p>
+        <p>33. Success seems to be connected with action. Successful people keep moving.</p>
+        <p>34. Don't watch the clock; do what it does. Keep going.</p>
+        <p>35. The future depends on what you do today.</p>
+        <p>36. The only way to do great work is to love what you do.</p>
+        <p>37. Believe you can and you're halfway there.</p>
+        <p>38. You are never too old to set another goal or to dream a new dream.</p>
+        <p>39. The journey of a thousand miles begins with one step.</p>
+        <p>40. What you get by achieving your goals is not as important as what you become.</p>
+      </div>
+      
+      <div class="motivation-card">
+        <p>41. Success is not in what you have, but who you are.</p>
+        <p>42. The only person you are destined to become is the person you decide to be.</p>
+        <p>43. Don't be pushed around by the fears in your mind. Be led by the dreams in your heart.</p>
+        <p>44. Do what you can with all you have, wherever you are.</p>
+        <p>45. Success is the sum of small efforts, repeated day in and day out.</p>
+        <p>46. The only limit to our realization of tomorrow is our doubts of today.</p>
+        <p>47. You don't have to be great to start, but you have to start to be great.</p>
+        <p>48. The expert in anything was once a beginner.</p>
+        <p>49. Your only limit is your mind.</p>
+        <p>50. The key to success is to focus on goals, not obstacles.</p>
+      </div>
+      
+      <div class="motivation-card">
+        <p>51. Dream big and dare to fail.</p>
+        <p>52. Success is not the key to happiness. Happiness is the key to success.</p>
+        <p>53. If you love what you are doing, you will be successful.</p>
+        <p>54. The only place where success comes before work is in the dictionary.</p>
+        <p>55. Success seems to be connected with action. Successful people keep moving.</p>
+        <p>56. Don't watch the clock; do what it does. Keep going.</p>
+        <p>57. The future depends on what you do today.</p>
+        <p>58. The only way to do great work is to love what you do.</p>
+        <p>59. Believe you can and you're halfway there.</p>
+        <p>60. You are never too old to set another goal or to dream a new dream.</p>
+      </div>
+      
+      <div class="motivation-card">
+        <p>61. The journey of a thousand miles begins with one step.</p>
+        <p>62. What you get by achieving your goals is not as important as what you become.</p>
+        <p>63. Success is not in what you have, but who you are.</p>
+        <p>64. The only person you are destined to become is the person you decide to be.</p>
+        <p>65. Don't be pushed around by the fears in your mind. Be led by the dreams in your heart.</p>
+        <p>66. Do what you can with all you have, wherever you are.</p>
+        <p>67. Success is the sum of small efforts, repeated day in and day out.</p>
+        <p>68. The only limit to our realization of tomorrow is our doubts of today.</p>
+        <p>69. You don't have to be great to start, but you have to start to be great.</p>
+        <p>70. The expert in anything was once a beginner.</p>
+      </div>
+      
+      <div class="motivation-card">
+        <p>71. Your only limit is your mind.</p>
+        <p>72. The key to success is to focus on goals, not obstacles.</p>
+        <p>73. Dream big and dare to fail.</p>
+        <p>74. Success is not the key to happiness. Happiness is the key to success.</p>
+        <p>75. If you love what you are doing, you will be successful.</p>
+      </div>
+    </div>
   </div>
+
+  <div class="coming-soon">2026 Coming Soon</div>
 
   <div class="footer">
     Limitless Mindset © 2025 | Empowering Your Journey to Success
+    <p style="margin-top: 10px; font-size: 14px;">Google Site Verified | SEO Optimized</p>
   </div>
 
-  <!-- Ad scripts -->
-  <script type='text/javascript' src='//pl26931902.profitableratecpm.com/3c/db/f2/3cdbf295bee26f615d0d99adeb107283.js'></script>
-  <script type='text/javascript' src='//pl26931944.profitableratecpm.com/fd/69/f7/fd69f725dc6f41b88c230756c9ef8d07.js'></script>
-
   <script>
+    // Calculate day of year
     const startDate = new Date(new Date().getFullYear(), 0, 1);
     const today = new Date();
     const currentDay = Math.floor((today - startDate) / (1000 * 60 * 60 * 24)) + 1;
     const monthsWasted = Math.floor(currentDay / 30);
     
+    // Update day and month counters
     document.getElementById("dayCount").innerText = `Day ${currentDay} of 365`;
     document.getElementById("monthCount").innerText = `You have wasted ${monthsWasted} months of 12 months`;
 
+    // Year end countdown
     const yearEnd = new Date(new Date().getFullYear(), 11, 31, 23, 59, 59);
+    
     function updateCountdown() {
       const now = new Date();
       const timeLeft = yearEnd - now;
+      
+      // Calculate time units
       const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
       const hours = Math.floor((timeLeft / (1000 * 60 * 60)) % 24);
       const minutes = Math.floor((timeLeft / (1000 * 60)) % 60);
       const seconds = Math.floor((timeLeft / 1000) % 60);
+      
+      // Format and display
       document.getElementById("countdown").innerText =
         `⏳ Year ends in: ${days}d ${hours}h ${minutes}m ${seconds}s`;
     }
+    
+    // Update countdown every second
     setInterval(updateCountdown, 1000);
-    updateCountdown();
+    updateCountdown(); // Initial call
 
-    // Trigger social bar every 40 seconds
-    setInterval(function() {
-      try {
-        if(typeof showSocialBar !== 'undefined') {
-          showSocialBar();
-        }
-      } catch(e) {
-        console.log("Ad script not loaded");
-      }
-    }, 40000);
+    // Animate elements on scroll
+    document.addEventListener('DOMContentLoaded', function() {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = 1;
+            entry.target.style.transform = 'translateY(0)';
+          }
+        });
+      }, {
+        threshold: 0.1
+      });
+      
+      // Observe all category elements
+      document.querySelectorAll('.category').forEach(el => {
+        el.style.opacity = 0;
+        el.style.transform = 'translateY(20px)';
+        el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+        observer.observe(el);
+      });
+    });
   </script>
 </body>
 </html>
