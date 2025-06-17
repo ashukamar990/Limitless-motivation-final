@@ -1,17 +1,341 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
-  <!-- ✅ Google Site Verification Tag -->
-  <meta name="google-site-verification" content="d91j2l4stW2PehxB-jiYz2AiMGm9AylXt2nqNQZB628" />
-  
-  <title>Limitless Motivation</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <!-- ✅ SEO Optimization -->
+  <title>Limitless Mindset - Unlock Your Potential</title>
+  <meta name="description" content="Track your progress, access valuable resources, and join the Limitless Mindset community. Download free books on business, investing, self-help, and more.">
+  <meta name="keywords" content="limitless mindset, self-improvement, free books, business, investing, motivation, time management">
+  <meta name="author" content="Limitless Mindset">
+  
+  <!-- ✅ Google Site Verification -->
+  <meta name="google-site-verification" content="d91j4l4stW2PehxB-jiYz2AiMGm9AylXt2nqNQZB628" />
+  
+  <!-- ✅ Open Graph Tags -->
+  <meta property="og:title" content="Limitless Mindset" />
+  <meta property="og:description" content="Track your progress, access valuable resources, and join the Limitless Mindset community." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://ashukamar990.github.io/Limitless-motivation-final/" />
+  <meta property="og:image" content="https://ashukamar990.github.io/Limitless-motivation-final/thumbnail.jpg" />
+  
+  <style>
+    body {
+      background: white;
+      color: black;
+      font-family: 'Segoe UI', sans-serif;
+      text-align: center;
+      padding: 20px;
+      max-width: 800px;
+      margin: 0 auto;
+      background: linear-gradient(to bottom, #ffffff, #f5f7fa);
+    }
+    h1 {
+      font-size: 32px;
+      color: red;
+      margin-bottom: 10px;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    }
+    #dayCount {
+      font-size: 36px;
+      font-weight: bold;
+      margin: 10px 0;
+      color: #333;
+    }
+    #monthCount {
+      font-size: 26px;
+      font-weight: bold;
+      margin: 10px 0;
+      color: #555;
+    }
+    #countdown {
+      font-size: 26px;
+      margin: 15px auto;
+      padding: 14px;
+      background: #f0f0f0;
+      border-radius: 10px;
+      display: inline-block;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .action-links {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+      margin: 25px 0;
+    }
+    .action-links a {
+      padding: 12px 22px;
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      border-radius: 10px;
+      transition: all 0.3s ease;
+      display: inline-block;
+      min-width: 250px;
+      font-size: 18px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    }
+    .action-links a:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+    }
+    .instagram-btn {
+      background: linear-gradient(45deg, #405DE6, #5851DB, #833AB4, #C13584, #E1306C, #FD1D1D);
+    }
+    .donate-btn {
+      background: linear-gradient(to right, #28a745, #218838);
+    }
+    .coming-soon {
+      font-size: 24px;
+      margin-top: 25px;
+      font-weight: bold;
+      color: #333;
+    }
+    .motivation {
+      margin-top: 35px;
+      text-align: left;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .motivation p {
+      font-size: 15px;
+      margin: 5px 0;
+      padding: 5px 10px;
+      border-left: 3px solid #e1306c;
+      background: #f9f9f9;
+      border-radius: 0 5px 5px 0;
+    }
+    .pdfs {
+      text-align: left;
+      margin: 30px auto;
+    }
+    .pdfs ul {
+      padding-left: 0;
+      list-style: none;
+    }
+    .pdfs li {
+      margin: 8px 0;
+      padding: 5px 0;
+      border-bottom: 1px solid #eee;
+    }
+    .pdfs a {
+      color: #007bff;
+      text-decoration: none;
+      font-size: 16px;
+      transition: all 0.2s ease;
+      display: block;
+      padding: 5px 0;
+    }
+    .pdfs a:hover {
+      color: #e1306c;
+      padding-left: 5px;
+    }
+    .quotes {
+      margin-top: 25px;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: left;
+      font-style: italic;
+      background: #f9f9f9;
+      padding: 15px;
+      border-radius: 8px;
+      border-left: 4px solid #e1306c;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+    .quote-author {
+      font-weight: bold;
+      margin-top: 10px;
+      color: #333;
+    }
+    .category {
+      margin: 30px 0;
+      border: 1px solid #eaeaea;
+      border-radius: 10px;
+      padding: 15px;
+      background: white;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+    }
+    .category-title {
+      font-size: 20px;
+      font-weight: bold;
+      color: #e1306c;
+      margin-bottom: 15px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #f0f0f0;
+      text-align: left;
+    }
+    .time-wasted {
+      font-size: 20px;
+      color: #333;
+      margin: 15px 0;
+      font-weight: bold;
+    }
+    .footer {
+      margin-top: 30px;
+      padding: 15px;
+      font-size: 14px;
+      color: #777;
+      border-top: 1px solid #eee;
+    }
+    .support-text {
+      font-size: 16px;
+      margin-top: 5px;
+      color: #555;
+    }
+  </style>
 </head>
 <body>
-  <h1>Welcome to Limitless Motivation</h1>
-  <p>This is a sample homepage.</p>
+  <h1>Limitless Mindset</h1>
+  <div class="time-wasted">You have already wasted this much time</div>
+  <div id="dayCount">Day 1 of 365</div>
+  <div id="monthCount">You have wasted 0 months of 12 months</div>
+  <div id="countdown">Loading countdown...</div>
+
+  <div class="pdfs">
+    <div class="category">
+      <div class="category-title">1. Business, Money & Investing</div>
+      <ul>
+        <li><a href="https://drive.google.com/uc?export=download&id=1-CKkHZBpfaFsolx2zZhAhVDcYk_oQvIj" target="_blank">100 Great Business Ideas (Hindi)</a></li>
+        <li><a href="https://drive.google.com/uc?export=download&id=1-2VcCmg4dd6CDtTiuJkZilszEzAhFs1s" target="_blank">Rich Dad Poor Dad</a></li>
+        <li><a href="https://drive.google.com/uc?export=download&id=1-YIyRD-z-UGLH4p2XCnUSofZ4S0uPS27" target="_blank">Think and Grow Rich (Hindi & English)</a></li>
+        <li><a href="https://drive.google.com/uc?export=download&id=1-MCEoxARS7fL6s7D8VAerUw3iDpDUz7W" target="_blank">The Psychology of Money</a></li>
+        <li><a href="https://drive.google.com/uc?export=download&id=1-URsoOEK71cY8clB0vn5UXkQ99haDnoS" target="_blank">The Intelligent Investor (Hindi)</a></li>
+        <li><a href="https://drive.google.com/uc?export=download&id=1-V428LO8mYpKrMxLJvexilSitMgI4Fpw" target="_blank">Warren Buffett – Ultimate Guide to Investing</a></li>
+        <li><a href="https://drive.google.com/uc?export=download&id=1-nZuL4g0XC3FrBqBUaQsRIbgbJ_uwU1E" target="_blank">FAKE – Robert Kiyosaki</a></li>
+        <li><a href="https://drive.google.com/uc?export=download&id=106DnTdAC7aicceVHk_YbfyVLAJ6H8RoL" target="_blank">Crushing It! – Entrepreneur Guide</a></li>
+      </ul>
+    </div>
+
+    <div class="category">
+      <div class="category-title">2. Social Media & Marketing</div>
+      <ul>
+        <li><a href="https://drive.google.com/uc?export=download&id=1-ZLq7hMsKQZCsrnsBrERFTsVwrlr_Bpo" target="_blank">Instagram Marketing Guide (Zero to 10k Followers)</a></li>
+        <li><a href="https://drive.google.com/uc?export=download&id=1-tUw2TO0HtQgJMb_bhgscVlVbYDHmp_I" target="_blank">Instagram Marketing for Business (PDFDrive)</a></li>
+        <li><a href="https://drive.google.com/uc?export=download&id=103blHNtRxgt4BuvnJpn5kkUFK43INN--" target="_blank">Social Media – Art of Marketing (YouTube/Insta etc.)</a></li>
+      </ul>
+    </div>
+
+    <div class="category">
+      <div class="category-title">3. Self-Help & Motivation</div>
+      <ul>
+        <li><a href="https://drive.google.com/uc?export=download&id=1-JClzDX2hEHAU4Fn_vkfIvYjwjdvM6_s" target="_blank">12 Rules for Life (Hindi)</a></li>
+        <li><a href="https://drive.google.com/uc?export=download&id=1-Sln8cqOkt-L6aiKEbBG7NaB6Zh2bGRr" target="_blank">Elon Musk ke Success Principles (Hindi)</a></li>
+      </ul>
+    </div>
+
+    <div class="category">
+      <div class="category-title">4. Finance & Money Management</div>
+      <ul>
+        <li><a href="https://drive.google.com/uc?export=download&id=10-zRdXasnY8puyT-OaFRHO4zTbFj2x93" target="_blank">Let’s Talk Money – Monika Halan</a></li>
+      </ul>
+    </div>
+
+    <div class="category">
+      <div class="category-title">5. Academics & Study</div>
+      <ul>
+        <li><a href="https://drive.google.com/uc?export=download&id=1-C8T9DsGAdq6UGHKTbLf_-5ypRTsmCKb" target="_blank">Class 11-12 Economics</a></li>
+      </ul>
+    </div>
+
+    <div class="category">
+      <div class="category-title">6. Religion & Spirituality</div>
+      <ul>
+        <li><a href="https://drive.google.com/uc?export=download&id=1-90hAP5bicpjQkCnfsuAqtoONi522Aus" target="_blank">Bhagavad Gita (Hindi)</a></li>
+        <li><a href="https://drive.google.com/uc?export=download&id=1-JRB7XxwKwo2uPq_Ir_BnnEEg3MwVcUZ" target="_blank">Aakhri Kitaab</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="action-links">
+    <a href="https://www.instagram.com/limitless_mindset_02" target="_blank" class="instagram-btn">
+      📸 Follow on Instagram
+    </a>
+    
+    <a href="https://rzp.io/rzp/9ynTVZs" target="_blank" class="donate-btn">
+      ❤️ Support Our Mission
+    </a>
+    <div class="support-text">Your donation helps us create more valuable content</div>
+  </div>
+
+  <div class="quotes">
+    <div class="quote">
+      <strong>— Elon Musk</strong><br>
+      "Agar koi kaam ya sapna aapke liye sach mein zaroori hai, to chahe har haal aapke khilaaf ho — aap use kar ke hi rahenge."
+    </div>
+    <div class="quote">
+      <strong>— Steve Jobs</strong><br>
+      "Hamesha kuch naya seekhne ki bhukh rakho, aur daring banaye rakho — log kya sochenge, isse mat daro."
+    </div>
+  </div>
+
+  <div class="coming-soon">🎯 2026 Coming Soon</div>
+
+  <div class="motivation">
+    <p>1. Success is no accident.</p>
+    <p>2. Push yourself, because no one else is going to do it for you.</p>
+    <p>3. Great things never come from comfort zones.</p>
+    <p>4. Dream it. Wish it. Do it.</p>
+    <p>5. Success doesn't just find you. You have to go out and get it.</p>
+    <p>6. Don't stop when you're tired. Stop when you're done.</p>
+    <p>7. Wake up with determination. Go to bed with satisfaction.</p>
+    <p>8. Do something today that your future self will thank you for.</p>
+    <p>9. Little things make big days.</p>
+    <p>10. It's going to be hard, but hard does not mean impossible.</p>
+    <p>11. Don't wait for opportunity. Create it.</p>
+    <p>12. You are capable of amazing things.</p>
+    <p>13. Dream big and dare to fail.</p>
+    <p>14. Action is the foundational key to all success.</p>
+    <p>15. Stay focused and never give up.</p>
+    <p>16. Difficult roads often lead to beautiful destinations.</p>
+    <p>17. Don't be afraid to give up the good to go for the great.</p>
+    <p>18. Believe you can and you're halfway there.</p>
+    <p>19. Nothing worth having comes easy.</p>
+    <p>20. Work hard in silence, let success make the noise.</p>
+  </div>
+
+  <div class="footer">
+    Limitless Mindset © 2025 | Empowering Your Journey to Success
+  </div>
+
+  <!-- Ad scripts -->
+  <script type='text/javascript' src='//pl26931902.profitableratecpm.com/3c/db/f2/3cdbf295bee26f615d0d99adeb107283.js'></script>
+  <script type='text/javascript' src='//pl26931944.profitableratecpm.com/fd/69/f7/fd69f725dc6f41b88c230756c9ef8d07.js'></script>
+
+  <script>
+    const startDate = new Date(new Date().getFullYear(), 0, 1);
+    const today = new Date();
+    const currentDay = Math.floor((today - startDate) / (1000 * 60 * 60 * 24)) + 1;
+    const monthsWasted = Math.floor(currentDay / 30);
+    
+    document.getElementById("dayCount").innerText = `Day ${currentDay} of 365`;
+    document.getElementById("monthCount").innerText = `You have wasted ${monthsWasted} months of 12 months`;
+
+    const yearEnd = new Date(new Date().getFullYear(), 11, 31, 23, 59, 59);
+    function updateCountdown() {
+      const now = new Date();
+      const timeLeft = yearEnd - now;
+      const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((timeLeft / (1000 * 60 * 60)) % 24);
+      const minutes = Math.floor((timeLeft / (1000 * 60)) % 60);
+      const seconds = Math.floor((timeLeft / 1000) % 60);
+      document.getElementById("countdown").innerText =
+        `⏳ Year ends in: ${days}d ${hours}h ${minutes}m ${seconds}s`;
+    }
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
+
+    // Trigger social bar every 40 seconds
+    setInterval(function() {
+      try {
+        if(typeof showSocialBar !== 'undefined') {
+          showSocialBar();
+        }
+      } catch(e) {
+        console.log("Ad script not loaded");
+      }
+    }, 40000);
+  </script>
 </body>
 </html>
-
