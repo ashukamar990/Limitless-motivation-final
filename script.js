@@ -1,4 +1,22 @@
 /***********************
+ * Firebase Configuration
+ ***********************/
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyAMDAW2Gvsh8qJY5gZoFvgiMHxO5qjQl-I",
+  authDomain: "videoapp-67c32.firebaseapp.com",
+  databaseURL: "https://videoapp-67c32-default-rtdb.firebaseio.com",
+  projectId: "videoapp-67c32",
+  storageBucket: "videoapp-67c32.firebasestorage.app",
+  messagingSenderId: "711675594877",
+  appId: "1:711675594877:web:7786ab4a432d60e6f70914"
+};
+
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+const database = firebase.database();
+
+/***********************
  * Demo product dataset (mixed categories) - Added more products
  ***********************/
 const PRODUCTS = [
@@ -68,6 +86,16 @@ const searchInput = document.getElementById('searchInput');
 const productSlider = document.getElementById('productSlider');
 const ordersNotification = document.getElementById('ordersNotification');
 
+// Generate a unique user ID for Firebase storage
+function getUserId() {
+  let userId = localStorage.getItem('userId');
+  if (!userId) {
+    userId = 'user_' + Math.random().toString(36).substr(2, 9);
+    localStorage.setItem('userId', userId);
+  }
+  return userId;
+}
+
 // Show toast notification
 function showToast(message, type = 'success') {
   const toast = document.getElementById('toast');
@@ -84,13 +112,20 @@ function showToast(message, type = 'success') {
 
 // Update notification badge
 function updateOrdersNotification() {
-  const orders = JSON.parse(localStorage.getItem('demo_orders') || '[]');
-  if (orders.length > 0 && !ordersViewed) {
-    ordersNotification.style.display = 'flex';
-    ordersNotification.textContent = orders.length;
-  } else {
-    ordersNotification.style.display = 'none';
-  }
+  const userId = getUserId();
+  const ordersRef = database.ref('orders/' + userId);
+  
+  ordersRef.once('value', (snapshot) => {
+    const orders = snapshot.val() || {};
+    const orderCount = Object.keys(orders).length;
+    
+    if (orderCount > 0 && !ordersViewed) {
+      ordersNotification.style.display = 'flex';
+      ordersNotification.textContent = orderCount;
+    } else {
+      ordersNotification.style.display = 'none';
+    }
+  });
 }
 
 // Show alert modal
@@ -355,109 +390,117 @@ function showMyOrders() {
   ordersViewed = true;
   updateOrdersNotification();
   
-  const orders = JSON.parse(localStorage.getItem('demo_orders') || '[]');
+  const userId = getUserId();
+  const ordersRef = database.ref('orders/' + userId);
   const ordersList = document.getElementById('ordersList');
   const noOrders = document.getElementById('noOrders');
   
   ordersList.innerHTML = '';
   
-  if (orders.length === 0) {
-    noOrders.style.display = 'block';
-    return;
-  }
-  
-  noOrders.style.display = 'none';
-  
-  // Sort orders by timestamp (newest first)
-  orders.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
-  
-  orders.forEach((order, index) => {
-    const product = PRODUCTS.find(p => p.id === order.productId);
-    if (!product) return;
+  ordersRef.once('value', (snapshot) => {
+    const ordersData = snapshot.val() || {};
+    const orders = Object.keys(ordersData).map(key => {
+      return { ...ordersData[key], firebaseKey: key };
+    });
     
-    const orderDate = new Date(order.timestamp);
-    const estimatedDelivery = new Date(orderDate);
-    estimatedDelivery.setDate(orderDate.getDate() + 7); // 7 days from order date
-    
-    const isCancellable = (Date.now() - orderDate.getTime()) < (24 * 60 * 60 * 1000); // Within 24 hours
-    const isShipped = (Date.now() - orderDate.getTime()) > (2 * 24 * 60 * 60 * 1000); // Shipped after 2 days
-    const isDelivered = (Date.now() - orderDate.getTime()) > (7 * 24 * 60 * 60 * 1000); // Delivered after 7 days
-    
-    let status = 'Confirmed';
-    let statusClass = 'status-confirmed';
-    
-    if (isDelivered) {
-      status = 'Delivered';
-      statusClass = 'status-delivered';
-    } else if (isShipped) {
-      status = 'Shipped';
-      statusClass = 'status-shipped';
-    } else if (!isCancellable) {
-      status = 'Processing';
-      statusClass = 'status-confirmed';
+    if (orders.length === 0) {
+      noOrders.style.display = 'block';
+      return;
     }
     
-    const orderCard = document.createElement('div');
-    orderCard.className = 'order-card';
-    orderCard.innerHTML = `
-      <div class="order-header">
-        <div>
-          <div class="order-id">Order #${orders.length - index}</div>
-          <div class="order-date">Placed on ${orderDate.toLocaleDateString()} at ${orderDate.toLocaleTimeString()}</div>
-          <div class="order-estimated">Estimated delivery: ${estimatedDelivery.toLocaleDateString()}</div>
-        </div>
-        <span class="order-status ${statusClass}">${status}</span>
-      </div>
+    noOrders.style.display = 'none';
+    
+    // Sort orders by timestamp (newest first)
+    orders.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+    
+    orders.forEach((order, index) => {
+      const product = PRODUCTS.find(p => p.id === order.productId);
+      if (!product) return;
       
-      <div class="order-details">
-        <div class="order-product-image" style="background-image:url('${product.images[0]}')"></div>
-        <div class="order-product-info">
-          <div class="order-product-title">${product.title}</div>
-          <div class="order-product-price">₹${product.price} x ${order.qty}</div>
-          <div class="order-product-meta">
-            Size: ${order.size} | Qty: ${order.qty}
+      const orderDate = new Date(order.timestamp);
+      const estimatedDelivery = new Date(orderDate);
+      estimatedDelivery.setDate(orderDate.getDate() + 7); // 7 days from order date
+      
+      const isCancellable = (Date.now() - orderDate.getTime()) < (24 * 60 * 60 * 1000); // Within 24 hours
+      const isShipped = (Date.now() - orderDate.getTime()) > (2 * 24 * 60 * 60 * 1000); // Shipped after 2 days
+      const isDelivered = (Date.now() - orderDate.getTime()) > (7 * 24 * 60 * 60 * 1000); // Delivered after 7 days
+      
+      let status = 'Confirmed';
+      let statusClass = 'status-confirmed';
+      
+      if (isDelivered) {
+        status = 'Delivered';
+        statusClass = 'status-delivered';
+      } else if (isShipped) {
+        status = 'Shipped';
+        statusClass = 'status-shipped';
+      } else if (!isCancellable) {
+        status = 'Processing';
+        statusClass = 'status-confirmed';
+      }
+      
+      const orderCard = document.createElement('div');
+      orderCard.className = 'order-card';
+      orderCard.innerHTML = `
+        <div class="order-header">
+          <div>
+            <div class="order-id">Order #${orders.length - index}</div>
+            <div class="order-date">Placed on ${orderDate.toLocaleDateString()} at ${orderDate.toLocaleTimeString()}</div>
+            <div class="order-estimated">Estimated delivery: ${estimatedDelivery.toLocaleDateString()}</div>
+          </div>
+          <span class="order-status ${statusClass}">${status}</span>
+        </div>
+        
+        <div class="order-details">
+          <div class="order-product-image" style="background-image:url('${product.images[0]}')"></div>
+          <div class="order-product-info">
+            <div class="order-product-title">${product.title}</div>
+            <div class="order-product-price">₹${product.price} x ${order.qty}</div>
+            <div class="order-product-meta">
+              Size: ${order.size} | Qty: ${order.qty}
+            </div>
           </div>
         </div>
-      </div>
-      
-      ${isDelivered ? `
-        <div class="delivery-congrats">
-          <div class="delivery-congrats-icon">🎉</div>
-          <div>Congratulations! Your order has been successfully delivered.</div>
-        </div>
-      ` : ''}
-      
-      <div class="order-actions">
-        ${isCancellable ? `
-          <button class="btn error cancel-order" data-index="${index}">Cancel Order</button>
+        
+        ${isDelivered ? `
+          <div class="delivery-congrats">
+            <div class="delivery-congrats-icon">🎉</div>
+            <div>Congratulations! Your order has been successfully delivered.</div>
+          </div>
         ` : ''}
-        <button class="btn secondary view-order-details" data-index="${index}">View Details</button>
-      </div>
-    `;
-    
-    ordersList.appendChild(orderCard);
-  });
-  
-  // Add event listeners to cancel buttons
-  document.querySelectorAll('.cancel-order').forEach(btn => {
-    btn.addEventListener('click', function() {
-      const index = parseInt(this.getAttribute('data-index'));
-      showCancellationModal(index);
+        
+        <div class="order-actions">
+          ${isCancellable ? `
+            <button class="btn error cancel-order" data-key="${order.firebaseKey}">Cancel Order</button>
+          ` : ''}
+          <button class="btn secondary view-order-details" data-key="${order.firebaseKey}">View Details</button>
+        </div>
+      `;
+      
+      ordersList.appendChild(orderCard);
     });
-  });
-  
-  // Add event listeners to view details buttons
-  document.querySelectorAll('.view-order-details').forEach(btn => {
-    btn.addEventListener('click', function() {
-      const index = parseInt(this.getAttribute('data-index'));
-      viewOrderDetails(index);
+    
+    // Add event listeners to cancel buttons
+    document.querySelectorAll('.cancel-order').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const key = this.getAttribute('data-key');
+        showCancellationModal(key);
+      });
+    });
+    
+    // Add event listeners to view details buttons
+    document.querySelectorAll('.view-order-details').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const key = this.getAttribute('data-key');
+        viewOrderDetails(key);
+      });
     });
   });
 }
 
 // Show cancellation modal with reason selection
-function showCancellationModal(index) {
-  selectedCancelOrderIndex = index;
+function showCancellationModal(key) {
+  selectedCancelOrderKey = key;
   const modal = document.getElementById('cancellationModal');
   modal.classList.add('active');
   
@@ -471,7 +514,7 @@ function showCancellationModal(index) {
 function closeCancellationModal() {
   const modal = document.getElementById('cancellationModal');
   modal.classList.remove('active');
-  selectedCancelOrderIndex = null;
+  selectedCancelOrderKey = null;
 }
 
 // Confirm order cancellation with selected reason
@@ -482,141 +525,153 @@ function confirmCancellation() {
     return;
   }
   
-  const orders = JSON.parse(localStorage.getItem('demo_orders') || '[]');
-  const order = orders[selectedCancelOrderIndex];
-  const product = PRODUCTS.find(p => p.id === order.productId);
+  const userId = getUserId();
+  const orderRef = database.ref('orders/' + userId + '/' + selectedCancelOrderKey);
   
-  // Calculate refund amount with deduction
-  const orderAmount = product.price * order.qty;
-  const deductionPercentage = 2 + Math.random(); // 2-3% deduction
-  const deductionAmount = Math.round(orderAmount * (deductionPercentage / 100));
-  const refundAmount = orderAmount - deductionAmount;
-  
-  // Show confirmation modal with Cancel and Yes buttons
-  showAlertModal(
-    `Please note that payment gateway charges (approx ${deductionPercentage.toFixed(1)}% of the order value) are non-refundable. For your order of ₹${orderAmount}, the refund amount will be ₹${refundAmount}. This deduction is due to Razorpay's non-refundable transaction fee. Do you want to proceed?`,
-    function() {
-      // This is the confirmation callback when user clicks "Yes"
-      orders.splice(selectedCancelOrderIndex, 1);
-      localStorage.setItem('demo_orders', JSON.stringify(orders));
-      
-      showMyOrders();
-      showToast(`Order for ${product.title} has been cancelled. Reason: ${selectedReason.value}`, 'success');
-      closeCancellationModal();
-    }
-  );
+  orderRef.once('value', (snapshot) => {
+    const order = snapshot.val();
+    const product = PRODUCTS.find(p => p.id === order.productId);
+    
+    // Calculate refund amount with deduction
+    const orderAmount = product.price * order.qty;
+    const deductionPercentage = 2 + Math.random(); // 2-3% deduction
+    const deductionAmount = Math.round(orderAmount * (deductionPercentage / 100));
+    const refundAmount = orderAmount - deductionAmount;
+    
+    // Show confirmation modal with Cancel and Yes buttons
+    showAlertModal(
+      `Please note that payment gateway charges (approx ${deductionPercentage.toFixed(1)}% of the order value) are non-refundable. For your order of ₹${orderAmount}, the refund amount will be ₹${refundAmount}. This deduction is due to Razorpay's non-refundable transaction fee. Do you want to proceed?`,
+      function() {
+        // This is the confirmation callback when user clicks "Yes"
+        orderRef.remove()
+          .then(() => {
+            showMyOrders();
+            showToast(`Order for ${product.title} has been cancelled. Reason: ${selectedReason.value}`, 'success');
+            closeCancellationModal();
+          })
+          .catch((error) => {
+            console.error('Error removing order:', error);
+            showToast('Error cancelling order. Please try again.', 'error');
+          });
+      }
+    );
+  });
 }
 
 // View order details
-function viewOrderDetails(index) {
-  const orders = JSON.parse(localStorage.getItem('demo_orders') || '[]');
-  const order = orders[index];
-  const product = PRODUCTS.find(p => p.id === order.productId);
+function viewOrderDetails(key) {
+  const userId = getUserId();
+  const orderRef = database.ref('orders/' + userId + '/' + key);
   
-  if (!product) return;
-  
-  const orderDate = new Date(order.timestamp);
-  const estimatedDelivery = new Date(orderDate);
-  estimatedDelivery.setDate(orderDate.getDate() + 7);
-  
-  // Create a modal or page to show detailed order information
-  const orderDetailsHTML = `
-    <div class="order-details-page">
-      <h2>Order Details</h2>
-      
-      <div class="order-details-section">
-        <div class="order-details-label">Order ID</div>
-        <div class="order-details-value">#${orders.length - index}</div>
+  orderRef.once('value', (snapshot) => {
+    const order = snapshot.val();
+    const product = PRODUCTS.find(p => p.id === order.productId);
+    
+    if (!product) return;
+    
+    const orderDate = new Date(order.timestamp);
+    const estimatedDelivery = new Date(orderDate);
+    estimatedDelivery.setDate(orderDate.getDate() + 7);
+    
+    // Create a modal or page to show detailed order information
+    const orderDetailsHTML = `
+      <div class="order-details-page">
+        <h2>Order Details</h2>
+        
+        <div class="order-details-section">
+          <div class="order-details-label">Order ID</div>
+          <div class="order-details-value">#${key.substr(0, 8)}</div>
+        </div>
+        
+        <div class="order-details-section">
+          <div class="order-details-label">Order Date</div>
+          <div class="order-details-value">${orderDate.toLocaleDateString()} at ${orderDate.toLocaleTimeString()}</div>
+        </div>
+        
+        <div class="order-details-section">
+          <div class="order-details-label">Estimated Delivery</div>
+          <div class="order-details-value">${estimatedDelivery.toLocaleDateString()}</div>
+        </div>
+        
+        <div class="order-details-section">
+          <div class="order-details-label">Product</div>
+          <div class="order-details-value">${product.title}</div>
+        </div>
+        
+        <div class="order-details-section">
+          <div class="order-details-label">Size</div>
+          <div class="order-details-value">${order.size}</div>
+        </div>
+        
+        <div class="order-details-section">
+          <div class="order-details-label">Quantity</div>
+          <div class="order-details-value">${order.qty}</div>
+        </div>
+        
+        <div class="order-details-section">
+          <div class="order-details-label">Price</div>
+          <div class="order-details-value">₹${product.price * order.qty}</div>
+        </div>
+        
+        <div class="order-details-section">
+          <div class="order-details-label">Delivery Address</div>
+          <div class="order-details-value">${order.house}, ${order.city}, ${order.state} - ${order.pincode}</div>
+        </div>
+        
+        <div class="order-details-section">
+          <div class="order-details-label">Contact</div>
+          <div class="order-details-value">${order.mobile}</div>
+        </div>
+        
+        <div class="order-details-section">
+          <div class="order-details-label">Payment Method</div>
+          <div class="order-details-value">${order.payment === 'prepaid' ? 'Prepaid (UPI / Card)' : 'Cash on Delivery'}</div>
+        </div>
       </div>
-      
-      <div class="order-details-section">
-        <div class="order-details-label">Order Date</div>
-        <div class="order-details-value">${orderDate.toLocaleDateString()} at ${orderDate.toLocaleTimeString()}</div>
-      </div>
-      
-      <div class="order-details-section">
-        <div class="order-details-label">Estimated Delivery</div>
-        <div class="order-details-value">${estimatedDelivery.toLocaleDateString()}</div>
-      </div>
-      
-      <div class="order-details-section">
-        <div class="order-details-label">Product</div>
-        <div class="order-details-value">${product.title}</div>
-      </div>
-      
-      <div class="order-details-section">
-        <div class="order-details-label">Size</div>
-        <div class="order-details-value">${order.size}</div>
-      </div>
-      
-      <div class="order-details-section">
-        <div class="order-details-label">Quantity</div>
-        <div class="order-details-value">${order.qty}</div>
-      </div>
-      
-      <div class="order-details-section">
-        <div class="order-details-label">Price</div>
-        <div class="order-details-value">₹${product.price * order.qty}</div>
-      </div>
-      
-      <div class="order-details-section">
-        <div class="order-details-label">Delivery Address</div>
-        <div class="order-details-value">${order.house}, ${order.city}, ${order.state} - ${order.pincode}</div>
-      </div>
-      
-      <div class="order-details-section">
-        <div class="order-details-label">Contact</div>
-        <div class="order-details-value">${order.mobile}</div>
-      </div>
-      
-      <div class="order-details-section">
-        <div class="order-details-label">Payment Method</div>
-        <div class="order-details-value">${order.payment === 'prepaid' ? 'Prepaid (UPI / Card)' : 'Cash on Delivery'}</div>
-      </div>
-    </div>
-  `;
-  
-  // Create a modal for order details
-  const modal = document.createElement('div');
-  modal.style.position = 'fixed';
-  modal.style.top = '0';
-  modal.style.left = '0';
-  modal.style.width = '100%';
-  modal.style.height = '100%';
-  modal.style.backgroundColor = 'rgba(0,0,0,0.5)';
-  modal.style.display = 'flex';
-  modal.style.justifyContent = 'center';
-  modal.style.alignItems = 'center';
-  modal.style.zIndex = '1000';
-  
-  const modalContent = document.createElement('div');
-  modalContent.style.backgroundColor = 'white';
-  modalContent.style.padding = '24px';
-  modalContent.style.borrowRadius = 'var(--radius)';
-  modalContent.style.maxWidth = '600px';
-  modalContent.style.width = '90%';
-  modalContent.style.maxHeight = '80%';
-  modalContent.style.overflowY = 'auto';
-  modalContent.innerHTML = orderDetailsHTML;
-  
-  const closeButton = document.createElement('button');
-  closeButton.className = 'btn';
-  closeButton.textContent = 'Close';
-  closeButton.style.marginTop = '20px';
-  closeButton.onclick = function() {
-    document.body.removeChild(modal);
-  };
-  
-  modalContent.appendChild(closeButton);
-  modal.appendChild(modalContent);
-  
-  modal.onclick = function(e) {
-    if (e.target === modal) {
+    `;
+    
+    // Create a modal for order details
+    const modal = document.createElement('div');
+    modal.style.position = 'fixed';
+    modal.style.top = '0';
+    modal.style.left = '0';
+    modal.style.width = '100%';
+    modal.style.height = '100%';
+    modal.style.backgroundColor = 'rgba(0,0,0,0.5)';
+    modal.style.display = 'flex';
+    modal.style.justifyContent = 'center';
+    modal.style.alignItems = 'center';
+    modal.style.zIndex = '1000';
+    
+    const modalContent = document.createElement('div');
+    modalContent.style.backgroundColor = 'white';
+    modalContent.style.padding = '24px';
+    modalContent.style.borderRadius = 'var(--radius)';
+    modalContent.style.maxWidth = '600px';
+    modalContent.style.width = '90%';
+    modalContent.style.maxHeight = '80%';
+    modalContent.style.overflowY = 'auto';
+    modalContent.innerHTML = orderDetailsHTML;
+    
+    const closeButton = document.createElement('button');
+    closeButton.className = 'btn';
+    closeButton.textContent = 'Close';
+    closeButton.style.marginTop = '20px';
+    closeButton.onclick = function() {
       document.body.removeChild(modal);
-    }
-  };
-  
-  document.body.appendChild(modal);
+    };
+    
+    modalContent.appendChild(closeButton);
+    modal.appendChild(modalContent);
+    
+    modal.onclick = function(e) {
+      if (e.target === modal) {
+        document.body.removeChild(modal);
+      }
+    };
+    
+    document.body.appendChild(modal);
+  });
 }
 
 // auto sliders for product cards
@@ -839,8 +894,7 @@ document.getElementById('confirmOrder').addEventListener('click', ()=>{
   const payment = document.querySelector('input[name="pay"]:checked').value;
   orderDraft.payment = payment;
   orderDraft.timestamp = new Date().toISOString();
-  saveOrderDemo(orderDraft);
-  showSuccess();
+  saveOrderToFirebase(orderDraft);
 });
 
 // success page actions
@@ -892,15 +946,21 @@ function setActiveStep(step){
   }
 }
 
-// demo save order
-function saveOrderDemo(draft){
-  const saved = JSON.parse(localStorage.getItem('demo_orders')||'[]');
-  saved.push({...draft});
-  localStorage.setItem('demo_orders', JSON.stringify(saved));
-  console.log('Order saved (demo):', draft);
+// Save order to Firebase
+function saveOrderToFirebase(draft){
+  const userId = getUserId();
+  const ordersRef = database.ref('orders/' + userId);
+  const newOrderRef = ordersRef.push();
   
-  // Update notification badge
-  updateOrdersNotification();
+  newOrderRef.set(draft)
+    .then(() => {
+      showSuccess();
+      showToast('Order placed successfully!', 'success');
+    })
+    .catch((error) => {
+      console.error('Error saving order:', error);
+      showToast('Error placing order. Please try again.', 'error');
+    });
 }
 
 // success display & confetti
