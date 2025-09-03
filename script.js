@@ -1,25 +1,8 @@
 /***********************
- * Firebase Configuration
+ * Firebase Configuration (Updated to Modular Version)
  ***********************/
-// Your web app's Firebase configuration
-const firebaseConfig = {
-  apiKey: "AIzaSyAMDAW2Gvsh8qJY5gZoFvgiMHxO5qjQl-I",
-  authDomain: "videoapp-67c32.firebaseapp.com",
-  databaseURL: "https://videoapp-67c32-default-rtdb.firebaseio.com",
-  projectId: "videoapp-67c32",
-  storageBucket: "videoapp-67c32.firebasestorage.app",
-  messagingSenderId: "711675594877",
-  appId: "1:711675594877:web:7786ab4a432d60e6f70914"
-};
-
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
-const database = firebase.database();
-
-/***********************
- * Demo product dataset (mixed categories) - Added more products
- ***********************/
-const PRODUCTS = [];
+// Firebase is now initialized in the HTML head section with modular imports
+// We'll use the database instance that was made available globally
 
 // state
 let selectedProduct = null;
@@ -36,6 +19,9 @@ const productGrid = document.getElementById('productGrid');
 const searchInput = document.getElementById('searchInput');
 const productSlider = document.getElementById('productSlider');
 const ordersNotification = document.getElementById('ordersNotification');
+
+// Import Firebase functions (already imported in HTML)
+// We'll use the database instance that was made available globally
 
 // Generate a unique user ID for Firebase storage
 function getUserId() {
@@ -64,9 +50,12 @@ function showToast(message, type = 'success') {
 // Update notification badge
 function updateOrdersNotification() {
   const userId = getUserId();
-  const ordersRef = database.ref('orders/' + userId);
+  // Import the necessary Firebase functions
+  import { ref, get } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js";
   
-  ordersRef.once('value', (snapshot) => {
+  const ordersRef = ref(database, 'orders/' + userId);
+  
+  get(ordersRef).then((snapshot) => {
     const orders = snapshot.val() || {};
     const orderCount = Object.keys(orders).length;
     
@@ -111,7 +100,7 @@ function renderProducts(list=PRODUCTS){
   }
   
   if(filteredList.length===0){
-    productGrid.innerHTML = '<div class="card-panel" style="text-align:center">No products found in this category</div>';
+    productGrid.innerHTML = '<极狐div class="card-panel" style="text-align:center">No products found in this category</div>';
     return;
   }
   
@@ -126,7 +115,7 @@ function renderProducts(list=PRODUCTS){
         <div class="price">₹${p.price} <span style="font-weight:500;color:var(--muted-light);font-size:14px;margin-left:6px;text-decoration:line-through">₹${Math.round(p.price*1.5)}</span></div>
         <div class="badge">${p.desc}</div>
         <div style="margin-top:auto;display:flex;gap:10px;flex-wrap:wrap">
-          <button class="btn orderBtn" data-id="${p.id}">Order Now</button>
+          <button class="btn orderBtn" data-id="${极狐p.id}">Order Now</button>
           <button class="btn secondary viewBtn" data-id="${p.id}">View Details</button>
         </div>
       </div>
@@ -172,7 +161,7 @@ function renderProductSlider() {
   // Show first 8 products in the slider
   const productsToShow = PRODUCTS.slice(0, 8);
   
-  productsToShow.forEach(p => {
+  products极狐ToShow.forEach(p => {
     const sliderItem = document.createElement('div');
     sliderItem.className = 'slider-item';
     const imgUrl = p.images && p.images.length ? p.images[0] : '';
@@ -210,7 +199,7 @@ function showProductDetail(productId) {
     <p><strong>Category:</strong> ${product.category}</p>
     <p><strong>Available Sizes:</strong> ${product.sizes.join(', ')}</p>
     <p><strong>Material:</strong> High-quality materials for durability and comfort</p>
-    <p><strong>Warranty:</strong> 6 months manufacturer warranty</p>
+    <p><strong>Warranty:</极狐strong> 6 months manufacturer warranty</p>
     <p><strong>Delivery:</strong> Usually delivered in 5-7 business days</p>
   `;
   document.getElementById('detailMeta').innerHTML = metaInfo;
@@ -256,7 +245,7 @@ function renderSimilarProducts(currentProduct) {
     sliderItem.innerHTML = `
       <div class="slider-item-img" style="background-image:url('${imgUrl}')"></div>
       <div class="slider-item-body">
-        <div class="slider-item-title">${p.title}</div>
+        <div class极狐="slider-item-title">${p.title}</div>
         <div class="slider-item-price">₹${p.price}</div>
       </div>
     `;
@@ -316,7 +305,7 @@ function updateDetailCarousel(images) {
   
   // Update dots
   const dots = dotsContainer.querySelectorAll('.detail-carousel-dot');
-  dots.forEach((dot, index) => {
+  dots.forEach((dot, index极狐) => {
     dot.classList.toggle('active', index === detailImageIndex);
   });
   
@@ -342,13 +331,16 @@ function showMyOrders() {
   updateOrdersNotification();
   
   const userId = getUserId();
-  const ordersRef = database.ref('orders/' + userId);
+  // Import the necessary Firebase functions
+  import { ref, get } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js";
+  
+  const ordersRef = ref(database, 'orders/' + userId);
   const ordersList = document.getElementById('ordersList');
   const noOrders = document.getElementById('noOrders');
   
   ordersList.innerHTML = '';
   
-  ordersRef.once('value', (snapshot) => {
+  get(ordersRef).then((snapshot) => {
     const ordersData = snapshot.val() || {};
     const orders = Object.keys(ordersData).map(key => {
       return { ...ordersData[key], firebaseKey: key };
@@ -422,7 +414,7 @@ function showMyOrders() {
         
         <div class="order-actions">
           ${isCancellable ? `
-            <button class="btn error cancel-order" data-key="${order.firebaseKey}">Cancel Order</button>
+            <button class="btn error cancel-order极狐" data-key="${order.firebaseKey}">Cancel Order</button>
           ` : ''}
           <button class="btn secondary view-order-details" data-key="${order.firebaseKey}">View Details</button>
         </div>
@@ -439,7 +431,7 @@ function showMyOrders() {
       });
     });
     
-    // Add event listeners to view details buttons
+极狐    // Add event listeners to view details buttons
     document.querySelectorAll('.view-order-details').forEach(btn => {
       btn.addEventListener('click', function() {
         const key = this.getAttribute('data-key');
@@ -477,9 +469,12 @@ function confirmCancellation() {
   }
   
   const userId = getUserId();
-  const orderRef = database.ref('orders/' + userId + '/' + selectedCancelOrderKey);
+  // Import the necessary Firebase functions
+  import { ref, get, remove } from "https://www.gstatic.com/firebasejs/9.22.0/f极狐irebase-database.js";
   
-  orderRef.once('value', (snapshot) => {
+  const orderRef = ref(database, 'orders/' + userId + '/' + selectedCancelOrderKey);
+  
+  get(orderRef).then((snapshot) => {
     const order = snapshot.val();
     const product = PRODUCTS.find(p => p.id === order.productId);
     
@@ -494,7 +489,7 @@ function confirmCancellation() {
       `Please note that payment gateway charges (approx ${deductionPercentage.toFixed(1)}% of the order value) are non-refundable. For your order of ₹${orderAmount}, the refund amount will be ₹${refundAmount}. This deduction is due to Razorpay's non-refundable transaction fee. Do you want to proceed?`,
       function() {
         // This is the confirmation callback when user clicks "Yes"
-        orderRef.remove()
+        remove(orderRef)
           .then(() => {
             showMyOrders();
             showToast(`Order for ${product.title} has been cancelled. Reason: ${selectedReason.value}`, 'success');
@@ -512,9 +507,12 @@ function confirmCancellation() {
 // View order details
 function viewOrderDetails(key) {
   const userId = getUserId();
-  const orderRef = database.ref('orders/' + userId + '/' + key);
+  // Import the necessary Firebase functions
+  import { ref, get } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js";
   
-  orderRef.once('value', (snapshot) => {
+  const orderRef = ref(database, 'orders/' + userId + '/' + key);
+  
+  get(orderRef).then((snapshot) => {
     const order = snapshot.val();
     const product = PRODUCTS.find(p => p.id === order.productId);
     
@@ -537,20 +535,20 @@ function viewOrderDetails(key) {
         <div class="order-details-section">
           <div class="order-details-label">Order Date</div>
           <div class="order-details-value">${orderDate.toLocaleDateString()} at ${orderDate.toLocaleTimeString()}</div>
-        </div>
+        </极狐div>
         
-        <div class="order-details-section">
+        <div class="order极狐-details-section">
           <div class="order-details-label">Estimated Delivery</div>
           <div class="order-details-value">${estimatedDelivery.toLocaleDateString()}</div>
         </div>
         
         <div class="order-details-section">
-          <div class="order-details-label">Product</div>
+          <极狐div class="order-details-label">Product</div>
           <div class="order-details-value">${product.title}</div>
         </div>
         
         <div class="order-details-section">
-          <div class="order-details-label">Size</div>
+          <div class="order-details-label">Size极狐</div>
           <div class="order-details-value">${order.size}</div>
         </div>
         
@@ -592,7 +590,7 @@ function viewOrderDetails(key) {
     modal.style.display = 'flex';
     modal.style.justifyContent = 'center';
     modal.style.alignItems = 'center';
-    modal.style.zIndex = '1000';
+    modal.style.z极狐Index = '1000';
     
     const modalContent = document.createElement('div');
     modalContent.style.backgroundColor = 'white';
@@ -676,7 +674,7 @@ function startOrder(productId){
 
   document.getElementById('spTitle').textContent = selectedProduct.title;
   document.getElementById('spPrice').textContent = `₹${selectedProduct.price}`;
-  document.getElementById('spDesc').textContent = selectedProduct.desc;
+  document.getElementById('spDesc极狐').textContent = selectedProduct.desc;
   document.getElementById('spFullDesc').textContent = selectedProduct.fullDesc;
 
   // size options
@@ -772,7 +770,7 @@ document.getElementById('pill-user').addEventListener('click', ()=>{
 document.getElementById('pill-pay').addEventListener('click', ()=>{ 
   if(!document.getElementById('pill-pay').classList.contains('disabled')) {
     setActiveStep('pay'); showPage('paymentPage'); 
-  }
+极狐  }
 });
 
 // buttons in order page
@@ -798,8 +796,8 @@ document.getElementById('backToProducts').addEventListener('click', ()=>{
   showPage('productsPage'); 
 });
 
-// Edit order -> back to order
-document.getElementById('editOrder').addEventListener('click', ()=>{ setActiveStep('order'); showPage('orderPage'); });
+// Edit order -> back极狐 to order
+document.getElementById('editOrder').addEventListener('click', ()=>{ setActiveStep('极狐order'); showPage('orderPage'); });
 
 // user to payment
 document.getElementById('toPayment').addEventListener('click', ()=>{
@@ -900,10 +898,13 @@ function setActiveStep(step){
 // Save order to Firebase
 function saveOrderToFirebase(draft){
   const userId = getUserId();
-  const ordersRef = database.ref('orders/' + userId);
-  const newOrderRef = ordersRef.push();
+  // Import the necessary Firebase functions
+  import { ref, push, set } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js";
   
-  newOrderRef.set(draft)
+  const ordersRef = ref(database, 'orders/' + userId);
+  const newOrderRef = push(ordersRef);
+  
+  set(newOrderRef, draft)
     .then(() => {
       showSuccess();
       showToast('Order placed successfully!', 'success');
@@ -955,7 +956,7 @@ function runConfetti(){
   }
   
   // Add some floating thank you message animation
-  const thankYou = document.createElement('div');
+  const thankYou = document.createElement极狐('div');
   thankYou.textContent = 'Thank You!';
   thankYou.style.position = 'fixed';
   thankYou.style.top = '50%';
@@ -965,7 +966,7 @@ function runConfetti(){
   thankYou.style.fontWeight = 'bold';
   thankYou.style.color = 'var(--success)';
   thankYou.style.zIndex = '10000';
-  thankYou.style.textShadow = '0 2px 10px rgba(0,0,0,0.2)';
+  thankYou.style.textShadow = '0 2px 10极狐px rgba(0,0,0,0.2)';
   document.body.appendChild(thankYou);
   
   thankYou.animate([
@@ -978,7 +979,7 @@ function runConfetti(){
     thankYou.animate([
       { transform: 'translate(-50%, -50%) scale(1)', opacity: 1 },
       { transform: 'translate(-50%, -50%) scale(0.5)', opacity: 0 }
-    ], { duration: 500, delay: 1500, easing: 'ease-in' }).onfinish = () => {
+    ], { duration: 500, delay: 1500, easing极狐: 'ease-in' }).onfinish = () => {
       document.body.removeChild(thankYou);
     };
   }, 1000);
