@@ -19,56 +19,7 @@ const database = firebase.database();
 /***********************
  * Demo product dataset (mixed categories) - Added more products
  ***********************/
-const PRODUCTS = [
-  {id:1,title:"Wireless Earbuds Pro",price:1299,desc:"ENC mic, 24h battery",fullDesc:"High-quality wireless earbuds with environmental noise cancellation microphone and 24 hours of battery life. Perfect for calls, music, and podcasts.",images:[
-    "https://images.unsplash.com/photo-1598335622921-7c1b84a3c2bf?auto=format&fit=crop&w=1000&q=60",
-    "https://images.unsplash.com/photo-1518445691220-6b95fcd0a2df?auto=format&fit=crop&w=1000&q=60",
-    "https://images.unsplash.com/photo-1518441902113-c1d0d0f70ed2?auto=format&fit=crop&w=1000&q=60"
-  ],sizes:["—","—"], category:"Men's Acc"},
-  {id:2,title:"Classic Cotton T‑Shirt",price:499,desc:"100% cotton, regular fit",fullDesc:"Comfortable 100% cotton t-shirt with regular fit. Available in multiple colors. Perfect for everyday wear.",images:[
-    "https://images.unsplash.com/photo-1520971282009-2c7e9f7d8dbe?auto=format&fit=crop&w=1000&q=60",
-    "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=1000&q=60"
-  ],sizes:["S","M","L","XL"], category:"Topwear"},
-  {id:3,title:"High‑Waist Denim Jeans",price:999,desc:"Stretch denim, comfy",fullDesc:"Stylish high-waist denim jeans made with stretchable material for maximum comfort. Perfect for casual outings.",images:[
-    "https://images.unsplash.com/photo-1542272604-787c3835535d?auto=format&fit=crop&w=1000&q=60",
-    "https://images.unsplash.com/photo-1495020689067-958852a7765e?auto=format&fit=crop&w=1000&q=60"
-  ],sizes:["26","28","30"], category:"Bottomwear"},
-  {id:4,title:"Mesh Sneakers",price:1499,desc:"Breathable, light",fullDesc:"Lightweight mesh sneakers with breathable fabric. Perfect for running, gym, or casual wear. Available in multiple sizes.",images:[
-    "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=1000&q=60",
-    "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1000&q=60"
-  ],sizes:["6","7","8","9","10"], category:"Casual shoes"},
-  {id:5,title:"Leather Crossbody Bag",price:1999,desc:"Genuine leather, multiple pockets",fullDesc:"Elegant crossbody bag made from genuine leather with multiple compartments for organized storage. Perfect for everyday use.",images:[
-    "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=1000&q=60",
-    "https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=1000&q=60"
-  ],sizes:["—"], category:"Backt"},
-  {id:6,title:"Smart Fitness Band",price:2499,desc:"Heart rate monitor, waterproof",fullDesc:"Advanced fitness band with heart rate monitoring, sleep tracking, and waterproof design. Tracks your activity throughout the day.",images:[
-    "https://images.unsplash.com/photo-1575311373937-040b8e1fd5b6?auto=format&fit=crop&w=1000&q=60",
-    "https://images.unsplash.com/photo-158612225000-92e24acc1c32?auto=format&fit=crop&w=1000&q=60"
-  ],sizes:["S","M","L"], category:"Watches"},
-  {id:7,title:"Stainless Steel Water Bottle",price:799,desc:"Insulated, 1L capacity",fullDesc:"Premium stainless steel water bottle that keeps your drinks hot for 12 hours or cold for 24 hours. Leak-proof design.",images:[
-    "https://images.unsplash.com/photo-1602143407151-7111542de6e8?auto=format&fit=crop&w=1000&q=60",
-    "https://images.unsplash.com/photo-1603400521630-9f2de124b33b?auto=format&fit=crop&w=1000&q=60"
-  ],sizes:["—"], category:"Men's Acc"},
-  {id:8,title:"Wireless Charging Pad",price:1299,desc:"Fast charging, compatible with all devices",fullDesc:"Universal wireless charging pad that supports fast charging for all Qi-enabled devices. Sleek design with non-slip surface.",images:[
-    "https://images.unsplash.com/photo-1609091839311-d5365f2e0c5a?auto=format&fit=crop&w=1000&q=60",
-    "https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?auto=format&fit=crop&w=1000&q=60"
-  ],sizes:["—"], category:"Men's Acc"},
-  {id:9,title:"Silk Saree",price:2999,desc:"Pure silk, elegant design",fullDesc:"Beautiful pure silk saree with elegant design. Perfect for weddings and special occasions.",images:[
-    "https://images.unsplash.com/photo-1585487000160-6ebcfcec0b71?auto=format&fit=crop&w=1000&q=60"
-  ],sizes:["Free Size"], category:"Sarees"},
-  {id:10,title:"Designer Kurta Set",price:1999,desc:"3-piece set, embroidered",fullDesc:"Elegant 3-piece kurta set with intricate embroidery. Includes kurta, dupatta, and bottoms.",images:[
-    "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?auto=format&fit=crop&w=1000&q=60"
-  ],sizes:["S", "M", "L"], category:"Kurta Sets"},
-  {id:11,title:"Winter Jacket",price:3499,desc:"Warm, insulated, waterproof",fullDesc:"High-quality winter jacket with insulation and waterproof exterior. Keeps you warm in extreme conditions.",images:[
-    "https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&w=1000&q=60"
-  ],sizes:["S", "M", "L", "XL"], category:"Winter Wear"},
-  {id:12,title:"Hardcase Trolley Bag",price:4999,desc:"Durable, 4 wheels, 68L",fullDesc:"Durable hardcase trolley bag with 4 spinner wheels and 68L capacity. Perfect for travel.",images:[
-    "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=1000&q=60"
-  ],sizes:["—"], category:"Trolley Bags"},
-  {id:13,title:"Denim Shorts",price:899,desc:"Comfortable, casual",fullDesc:"Comfortable denim shorts for casual wear.",images:[
-    "https://images.unsplash.com/photo-1598033129183-c4f50c736f10?auto=format&fit=crop&w=1000&q=60"
-  ],sizes:["28", "30", "32"], category:"Bottor"}
-];
+const PRODUCTS = [];
 
 // state
 let selectedProduct = null;
