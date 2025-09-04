@@ -12,9 +12,9 @@
 <link href="style.css" rel="stylesheet"/>
 
 <!-- Firebase App (the core Firebase SDK) -->
-
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
 <!-- Firebase Database -->
-
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
 </head>
 <body>
 <header>
@@ -512,24 +512,5 @@
 </div>
 </div>
 
-<script src="script.js"></script><script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
-  import { getDatabase } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-database.js";
-
-  const firebaseConfig = {
-    apiKey: "AIzaSyAMDAW2Gvsh8qJY5gZoFvgiMHxO5qjQl-I",
-    authDomain: "videoapp-67c32.firebaseapp.com",
-    databaseURL: "https://videoapp-67c32-default-rtdb.firebaseio.com",
-    projectId: "videoapp-67c32",
-    storageBucket: "videoapp-67c32.firebasestorage.app",
-    messagingSenderId: "711675594877",
-    appId: "1:711675594877:web:7786ab4a432d60e6f70914"
-  };
-
-  // Initialize Firebase
-  export const app = initializeApp(firebaseConfig);
-  export const database = getDatabase(app);
-</script>
-
-</body>
+<script src="script.js"></script></body>
 </html>
