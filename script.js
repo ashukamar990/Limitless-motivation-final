@@ -1,3 +1,7 @@
+import { getDatabase, ref, set, push, get, child } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-database.js";
+import { app } from "./index.html";
+const database = getDatabase(app);
+
 /***********************
  * Firebase Configuration
  ***********************/
@@ -13,8 +17,6 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-firebase.initializeApp(firebaseConfig);
-const database = firebase.database();
 
 /***********************
  * Demo product dataset (mixed categories) - Added more products
