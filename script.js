@@ -1,10 +1,8 @@
-// script.js
+// script.js (final navigation fix)
 
-// Show given page and hide others
-function showPage(pageId) {
-  // saare pages hide karo
+// Make showPage globally accessible for inline onclick
+window.showPage = function(pageId) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  // target page ko dikhao
   const target = document.getElementById(pageId);
   if (target) {
     target.classList.add('active');
@@ -12,20 +10,8 @@ function showPage(pageId) {
   }
 }
 
-// Footer links (with inline onclick fallback)
-document.querySelectorAll('footer a').forEach(link => {
-  link.addEventListener('click', e => {
-    const onclickAttr = link.getAttribute('onclick');
-    if (onclickAttr) {
-      e.preventDefault();
-      const match = onclickAttr.match(/showPage\('(.+)'\)/);
-      if (match) showPage(match[1]);
-    }
-  });
+// Ensure back buttons also work
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll('#backBtn, .back-button, .back-to-products, #goHome')
+    .forEach(btn => btn.addEventListener('click', () => window.showPage('productsPage')));
 });
-
-// Back buttons
-document.querySelectorAll('.back-button, .back-to-products, #backToProducts, #goHome')
-  .forEach(btn => {
-    btn.addEventListener('click', () => showPage('productsPage'));
-  });
