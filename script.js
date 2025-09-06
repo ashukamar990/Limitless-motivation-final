@@ -1,56 +1,72 @@
+// Firebase configuration and initialization
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+import { getFirestore, enableIndexedDbPersistence, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAMDAW2Gvsh8qJY5gZoFvgiMHxO5qjQl-I",
+  authDomain: "videoapp-67c32.firebaseapp.com",
+  databaseURL: "https://videoapp-67c32-default-rtdb.firebaseio.com",
+  projectId: "videoapp-67c32",
+  storageBucket: "videoapp-67c32.firebasestorage.app",
+  messagingSenderId: "711675594877",
+  appId: "1:711675594877:web:7786ab4a432d60e6f70914"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+// Enable offline persistence
+enableIndexedDbPersistence(db)
+  .then(() => {
+    console.log("Offline persistence enabled");
+  })
+  .catch((err) => {
+    console.error("Offline persistence error: ", err);
+  });
+
+// Example onSnapshot listener for products collection
+const productsRef = collection(db, 'products');
+const unsubscribe = onSnapshot(productsRef, 
+  (snapshot) => {
+    console.log("Received products snapshot");
+    const products = [];
+    snapshot.forEach((doc) => {
+      products.push({ id: doc.id, ...doc.data() });
+    });
+    
+    // Update the UI with the new products data
+    updateProductsUI(products);
+  },
+  (error) => {
+    console.error("Error getting products: ", error);
+  }
+);
+
+// Function to update UI with products from Firestore
+function updateProductsUI(products) {
+  // This function will update your product grid and slider with data from Firestore
+  // You'll need to adapt this to work with your existing renderProducts function
+  console.log("Updating UI with products:", products);
+  
+  // Update the global PRODUCTS variable
+  window.PRODUCTS = products;
+  
+  // Re-render products if the functions are available
+  if (typeof renderProducts === 'function') {
+    renderProducts();
+  }
+  
+  if (typeof renderProductSlider === 'function') {
+    renderProductSlider();
+  }
+}
+
+// All the existing JavaScript code from your HTML file
 /***********************
  * Demo product dataset (mixed categories) - Added more products
  ***********************/
-const PRODUCTS = [
-  {id:1,title:"Wireless Earbuds Pro",price:1299,desc:"ENC mic, 24h battery",fullDesc:"High-quality wireless earbuds with environmental noise cancellation microphone and 24 hours of battery life. Perfect for calls, music, and podcasts.",images:[
-    "https://images.unsplash.com/photo-1598335622921-7c1b84a3c2bf?auto=format&fit=crop&w=1000&q=60",
-    "https://images.unsplash.com/photo-1518445691220-6b95fcd0a2df?auto=format&fit=crop&w=1000&q=60",
-    "https://images.unsplash.com/photo-1518441902113-c1d0d0f70ed2?auto=format&fit=crop&w=1000&q=60"
-  ],sizes:["—","—"], category:"Men's Acc"},
-  {id:2,title:"Classic Cotton T‑Shirt",price:499,desc:"100% cotton, regular fit",fullDesc:"Comfortable 100% cotton t-shirt with regular fit. Available in multiple colors. Perfect for everyday wear.",images:[
-    "https://images.unsplash.com/photo-1520971282009-2c7e9f7d8dbe?auto=format&fit=crop&w=1000&q=60",
-    "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=1000&q=60"
-  ],sizes:["S","M","L","XL"], category:"Topwear"},
-  {id:3,title:"High‑Waist Denim Jeans",price:999,desc:"Stretch denim, comfy",fullDesc:"Stylish high-waist denim jeans made with stretchable material for maximum comfort. Perfect for casual outings.",images:[
-    "https://images.unsplash.com/photo-1542272604-787c3835535d?auto=format&fit=crop&w=1000&q=60",
-    "https://images.unsplash.com/photo-1495020689067-958852a7765e?auto=format&fit=crop&w=1000&q=60"
-  ],sizes:["26","28","30"], category:"Bottomwear"},
-  {id:4,title:"Mesh Sneakers",price:1499,desc:"Breathable, light",fullDesc:"Lightweight mesh sneakers with breathable fabric. Perfect for running, gym, or casual wear. Available in multiple sizes.",images:[
-    "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=1000&q=60",
-    "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1000&q=60"
-  ],sizes:["6","7","8","9","10"], category:"Casual shoes"},
-  {id:5,title:"Leather Crossbody Bag",price:1999,desc:"Genuine leather, multiple pockets",fullDesc:"Elegant crossbody bag made from genuine leather with multiple compartments for organized storage. Perfect for everyday use.",images:[
-    "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=1000&q=60",
-    "https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=1000&q=60"
-  ],sizes:["—"], category:"Backt"},
-  {id:6,title:"Smart Fitness Band",price:2499,desc:"Heart rate monitor, waterproof",fullDesc:"Advanced fitness band with heart rate monitoring, sleep tracking, and waterproof design. Tracks your activity throughout the day.",images:[
-    "https://images.unsplash.com/photo-1575311373937-040b8e1fd5b6?auto=format&fit=crop&w=1000&q=60",
-    "https://images.unsplash.com/photo-158612225000-92e24acc1c32?auto=format&fit=crop&w=1000&q=60"
-  ],sizes:["S","M","L"], category:"Watches"},
-  {id:7,title:"Stainless Steel Water Bottle",price:799,desc:"Insulated, 1L capacity",fullDesc:"Premium stainless steel water bottle that keeps your drinks hot for 12 hours or cold for 24 hours. Leak-proof design.",images:[
-    "https://images.unsplash.com/photo-1602143407151-7111542de6e8?auto=format&fit=crop&w=1000&q=60",
-    "https://images.unsplash.com/photo-1603400521630-9f2de124b33b?auto=format&fit=crop&w=1000&q=60"
-  ],sizes:["—"], category:"Men's Acc"},
-  {id:8,title:"Wireless Charging Pad",price:1299,desc:"Fast charging, compatible with all devices",fullDesc:"Universal wireless charging pad that supports fast charging for all Qi-enabled devices. Sleek design with non-slip surface.",images:[
-    "https://images.unsplash.com/photo-1609091839311-d5365f2e0c5a?auto=format&fit=crop&w=1000&q=60",
-    "https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?auto=format&fit=crop&w=1000&q=60"
-  ],sizes:["—"], category:"Men's Acc"},
-  {id:9,title:"Silk Saree",price:2999,desc:"Pure silk, elegant design",fullDesc:"Beautiful pure silk saree with elegant design. Perfect for weddings and special occasions.",images:[
-    "https://images.unsplash.com/photo-1585487000160-6ebcfcec0b71?auto=format&fit=crop&w=1000&q=60"
-  ],sizes:["Free Size"], category:"Sarees"},
-  {id:10,title:"Designer Kurta Set",price:1999,desc:"3-piece set, embroidered",fullDesc:"Elegant 3-piece kurta set with intricate embroidery. Includes kurta, dupatta, and bottoms.",images:[
-    "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?auto=format&fit=crop&w=1000&q=60"
-  ],sizes:["S", "M", "L"], category:"Kurta Sets"},
-  {id:11,title:"Winter Jacket",price:3499,desc:"Warm, insulated, waterproof",fullDesc:"High-quality winter jacket with insulation and waterproof exterior. Keeps you warm in extreme conditions.",images:[
-    "https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&w=1000&q=60"
-  ],sizes:["S", "M", "L", "XL"], category:"Winter Wear"},
-  {id:12,title:"Hardcase Trolley Bag",price:4999,desc:"Durable, 4 wheels, 68L",fullDesc:"Durable hardcase trolley bag with 4 spinner wheels and 68L capacity. Perfect for travel.",images:[
-    "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=1000&q=60"
-  ],sizes:["—"], category:"Trolley Bags"},
-  {id:13,title:"Denim Shorts",price:899,desc:"Comfortable, casual",fullDesc:"Comfortable denim shorts for casual wear.",images:[
-    "https://images.unsplash.com/photo-1598033129183-c4f50c736f10?auto=format&fit=crop&w=1000&q=60"
-  ],sizes:["28", "30", "32"], category:"Bottor"}
-];
+let PRODUCTS = [];
 
 // state
 let selectedProduct = null;
@@ -61,6 +77,12 @@ let detailImageIndex = 0;
 let selectedCancelOrderIndex = null;
 let alertModalConfirmCallback = null;
 let ordersViewed = false;
+
+// elements
+const productGrid = document.getElementById('productGrid');
+const searchInput = document.getElementById('searchInput');
+const productSlider = document.getElementById('productSlider');
+const ordersNotification = document.getElementById('ordersNotification');
 
 // Show toast notification
 function showToast(message, type = 'success') {
@@ -105,7 +127,7 @@ function closeAlertModal() {
 }
 
 // render product cards with auto slider
-function renderProducts(list=PRODUCTS){
+function renderProducts(list = PRODUCTS){
   productGrid.innerHTML = '';
   if(list.length===0){
     productGrid.innerHTML = '<div class="card-panel" style="text-align:center">No products found</div>';
@@ -563,9 +585,9 @@ function viewOrderDetails(index) {
         <div class="order-details-value">${order.mobile}</div>
       </div>
       
-      <div class="order-details-section">
-        <div class="order-details-label">Payment Method</div>
-        <div class="order-details-value">${order.payment === 'prepaid' ? 'Prepaid (UPI / Card)' : 'Cash on Delivery'}</div>
+      <div class='order-details-section'>
+        <div class='order-details-label'>Payment Method</div>
+        <div class='order-details-value'>${order.payment === 'prepaid' ? 'Prepaid (UPI / Card)' : 'Cash on Delivery'}</div>
       </div>
     </div>
   `;
@@ -586,7 +608,7 @@ function viewOrderDetails(index) {
   const modalContent = document.createElement('div');
   modalContent.style.backgroundColor = 'white';
   modalContent.style.padding = '24px';
-  modalContent.style.borrowRadius = 'var(--radius)';
+  modalContent.style.borderRadius = 'var(--radius)';
   modalContent.style.maxWidth = '600px';
   modalContent.style.width = '90%';
   modalContent.style.maxHeight = '80%';
@@ -629,6 +651,14 @@ function startCardSliders(){
   });
 }
 
+// search only in product titles
+searchInput.addEventListener('input', e=>{
+  const q = e.target.value.trim().toLowerCase();
+  if(!q){ renderProducts(); return; }
+  const filtered = PRODUCTS.filter(p=>p.title.toLowerCase().includes(q));
+  renderProducts(filtered);
+});
+
 // Enable step navigation
 function enableStep(stepNumber) {
   const steps = ['pill-order', 'pill-user', 'pill-pay'];
@@ -636,6 +666,14 @@ function enableStep(stepNumber) {
     document.getElementById(steps[stepNumber-1]).classList.remove('disabled');
   }
 }
+
+// order button clicks
+document.addEventListener('click', function(e){
+  if(e.target.matches('.orderBtn')){
+    const id = Number(e.target.dataset.id);
+    startOrder(id);
+  }
+});
 
 function startOrder(productId){
   selectedProduct = PRODUCTS.find(p=>p.id===productId);
@@ -728,6 +766,120 @@ function updateCarousel(container, images, dotsContainer) {
     dot.classList.toggle('active', index === currentImageIndex);
   });
 }
+
+// steps click navigation with checks
+document.getElementById('pill-products').addEventListener('click', ()=>{ setActiveStep('products'); showPage('productsPage'); });
+document.getElementById('pill-order').addEventListener('click', ()=>{ 
+  if(!document.getElementById('pill-order').classList.contains('disabled')) {
+    if(selectedProduct) { setActiveStep('order'); showPage('orderPage'); } 
+  }
+});
+document.getElementById('pill-user').addEventListener('click', ()=>{ 
+  if(!document.getElementById('pill-user').classList.contains('disabled')) {
+    setActiveStep('user'); showPage('userPage'); 
+  }
+});
+document.getElementById('pill-pay').addEventListener('click', ()=>{ 
+  if(!document.getElementById('pill-pay').classList.contains('disabled')) {
+    setActiveStep('pay'); showPage('paymentPage'); 
+  }
+});
+
+// buttons in order page
+document.getElementById('toUserInfo').addEventListener('click', ()=>{
+  const size = document.getElementById('sizeSelect').value;
+  const qty = Number(document.getElementById('qtySelect').value || 1);
+  if(!size){ alert('Please select a size'); return; }
+  if(qty < 1){ alert('Quantity must be at least 1'); return; }
+  orderDraft.productId = selectedProduct.id;
+  orderDraft.size = size;
+  orderDraft.qty = qty;
+  
+  // Enable user info step
+  enableStep(2);
+  
+  setActiveStep('user');
+  showPage('userPage');
+  window.scrollTo(0,0);
+});
+
+document.getElementById('backToProducts').addEventListener('click', ()=>{ 
+  setActiveStep('products'); 
+  showPage('productsPage'); 
+});
+
+// Edit order -> back to order
+document.getElementById('editOrder').addEventListener('click', ()=>{ setActiveStep('order'); showPage('orderPage'); });
+
+// user to payment
+document.getElementById('toPayment').addEventListener('click', ()=>{
+  const fullname = document.getElementById('fullname').value.trim();
+  const mobile = document.getElementById('mobile').value.trim();
+  const pincode = document.getElementById('pincode').value.trim();
+  const city = document.getElementById('city').value.trim();
+  const state = document.getElementById('state').value.trim();
+  const house = document.getElementById('house').value.trim();
+
+  if(!fullname || !mobile || !pincode || !city || !state || !house){
+    alert('Please fill all required address fields.');
+    return;
+  }
+  if(!/^\d{10}$/.test(mobile)){ alert('Enter a valid 10-digit mobile number'); return; }
+
+  orderDraft.fullname = fullname; orderDraft.mobile = mobile; orderDraft.pincode = pincode;
+  orderDraft.city = city; orderDraft.state = state; orderDraft.house = house;
+
+  const prod = PRODUCTS.find(p=>p.id===orderDraft.productId);
+  const price = prod.price * orderDraft.qty;
+  const delivery = 50;
+  const total = price + delivery;
+  document.getElementById('sumProduct').textContent = prod.title;
+  document.getElementById('sumQty').textContent = orderDraft.qty;
+  document.getElementById('sumPrice').textContent = `₹${price}`;
+  document.getElementById('sumTotal').textContent = `₹${total}`;
+  document.getElementById('sumDel').textContent = `₹${delivery}`;
+
+  // Enable payment step
+  enableStep(3);
+  
+  setActiveStep('pay');
+  showPage('paymentPage');
+  window.scrollTo(0,0);
+});
+
+// payment - back
+document.getElementById('payBack').addEventListener('click', ()=>{ setActiveStep('user'); showPage('userPage'); });
+
+// confirm order
+document.getElementById('confirmOrder').addEventListener('click', ()=>{
+  const payment = document.querySelector('input[name="pay"]:checked').value;
+  orderDraft.payment = payment;
+  orderDraft.timestamp = new Date().toISOString();
+  saveOrderDemo(orderDraft);
+  showSuccess();
+});
+
+// success page actions
+document.getElementById('goHome').addEventListener('click', ()=>{ 
+  // Reset steps
+  document.getElementById('pill-order').classList.add('disabled');
+  document.getElementById('pill-user').classList.add('disabled');
+  document.getElementById('pill-pay').classList.add('disabled');
+  
+  setActiveStep('products'); 
+  showPage('productsPage'); 
+});
+document.getElementById('viewOrders').addEventListener('click', ()=>{
+  showMyOrders();
+  showPage('myOrdersPage');
+});
+
+// header buttons
+document.getElementById('openContactTop').addEventListener('click', ()=> showPage('contactPage'));
+document.getElementById('openMyOrdersTop').addEventListener('click', ()=> {
+  showMyOrders();
+  showPage('myOrdersPage');
+});
 
 // helper: show page by id
 function showPage(id){
@@ -905,150 +1057,11 @@ function setupAlertModal() {
 }
 
 // initial render
-function initializeApp() {
-  // elements
-  const productGrid = document.getElementById('productGrid');
-  const searchInput = document.getElementById('searchInput');
-  const productSlider = document.getElementById('productSlider');
-  const ordersNotification = document.getElementById('ordersNotification');
-
-  // search only in product titles
-  searchInput.addEventListener('input', e=>{
-    const q = e.target.value.trim().toLowerCase();
-    if(!q){ renderProducts(); return; }
-    const filtered = PRODUCTS.filter(p=>p.title.toLowerCase().includes(q));
-    renderProducts(filtered);
-  });
-
-  // order button clicks
-  document.addEventListener('click', function(e){
-    if(e.target.matches('.orderBtn')){
-      const id = Number(e.target.dataset.id);
-      startOrder(id);
-    }
-  });
-
-  // steps click navigation with checks
-  document.getElementById('pill-products').addEventListener('click', ()=>{ setActiveStep('products'); showPage('productsPage'); });
-  document.getElementById('pill-order').addEventListener('click', ()=>{ 
-    if(!document.getElementById('pill-order').classList.contains('disabled')) {
-      if(selectedProduct) { setActiveStep('order'); showPage('orderPage'); } 
-    }
-  });
-  document.getElementById('pill-user').addEventListener('click', ()=>{ 
-    if(!document.getElementById('pill-user').classList.contains('disabled')) {
-      setActiveStep('user'); showPage('userPage'); 
-    }
-  });
-  document.getElementById('pill-pay').addEventListener('click', ()=>{ 
-    if(!document.getElementById('pill-pay').classList.contains('disabled')) {
-      setActiveStep('pay'); showPage('paymentPage'); 
-    }
-  });
-
-  // buttons in order page
-  document.getElementById('toUserInfo').addEventListener('click', ()=>{
-    const size = document.getElementById('sizeSelect').value;
-    const qty = Number(document.getElementById('qtySelect').value || 1);
-    if(!size){ alert('Please select a size'); return; }
-    if(qty < 1){ alert('Quantity must be at least 1'); return; }
-    orderDraft.productId = selectedProduct.id;
-    orderDraft.size = size;
-    orderDraft.qty = qty;
-    
-    // Enable user info step
-    enableStep(2);
-    
-    setActiveStep('user');
-    showPage('userPage');
-    window.scrollTo(0,0);
-  });
-
-  document.getElementById('backToProducts').addEventListener('click', ()=>{ 
-    setActiveStep('products'); 
-    showPage('productsPage'); 
-  });
-
-  // Edit order -> back to order
-  document.getElementById('editOrder').addEventListener('click', ()=>{ setActiveStep('order'); showPage('orderPage'); });
-
-  // user to payment
-  document.getElementById('toPayment').addEventListener('click', ()=>{
-    const fullname = document.getElementById('fullname').value.trim();
-    const mobile = document.getElementById('mobile').value.trim();
-    const pincode = document.getElementById('pincode').value.trim();
-    const city = document.getElementById('city').value.trim();
-    const state = document.getElementById('state').value.trim();
-    const house = document.getElementById('house').value.trim();
-
-    if(!fullname || !mobile || !pincode || !city || !state || !house){
-      alert('Please fill all required address fields.');
-      return;
-    }
-    if(!/^\d{10}$/.test(mobile)){ alert('Enter a valid 10-digit mobile number'); return; }
-
-    orderDraft.fullname = fullname; orderDraft.mobile = mobile; orderDraft.pincode = pincode;
-    orderDraft.city = city; orderDraft.state = state; orderDraft.house = house;
-
-    const prod = PRODUCTS.find(p=>p.id===orderDraft.productId);
-    const price = prod.price * orderDraft.qty;
-    const delivery = 50;
-    const total = price + delivery;
-    document.getElementById('sumProduct').textContent = prod.title;
-    document.getElementById('sumQty').textContent = orderDraft.qty;
-    document.getElementById('sumPrice').textContent = `₹${price}`;
-    document.getElementById('sumTotal').textContent = `₹${total}`;
-    document.getElementById('sumDel').textContent = `₹${delivery}`;
-
-    // Enable payment step
-    enableStep(3);
-    
-    setActiveStep('pay');
-    showPage('paymentPage');
-    window.scrollTo(0,0);
-  });
-
-  // payment - back
-  document.getElementById('payBack').addEventListener('click', ()=>{ setActiveStep('user'); showPage('userPage'); });
-
-  // confirm order
-  document.getElementById('confirmOrder').addEventListener('click', ()=>{
-    const payment = document.querySelector('input[name="pay"]:checked').value;
-    orderDraft.payment = payment;
-    orderDraft.timestamp = new Date().toISOString();
-    saveOrderDemo(orderDraft);
-    showSuccess();
-  });
-
-  // success page actions
-  document.getElementById('goHome').addEventListener('click', ()=>{ 
-    // Reset steps
-    document.getElementById('pill-order').classList.add('disabled');
-    document.getElementById('pill-user').classList.add('disabled');
-    document.getElementById('pill-pay').classList.add('disabled');
-    
-    setActiveStep('products'); 
-    showPage('productsPage'); 
-  });
-  document.getElementById('viewOrders').addEventListener('click', ()=>{
-    showMyOrders();
-    showPage('myOrdersPage');
-  });
-
-  // header buttons
-  document.getElementById('openContactTop').addEventListener('click', ()=> showPage('contactPage'));
-  document.getElementById('openMyOrdersTop').addEventListener('click', ()=> {
-    showMyOrders();
-    showPage('myOrdersPage');
-  });
-
+document.addEventListener('DOMContentLoaded', function() {
   renderProducts();
   renderProductSlider();
   setupCategoryFilter();
   setupCancellationModal();
   setupAlertModal();
   updateOrdersNotification();
-}
-
-// Initialize the app when DOM is loaded
-document.addEventListener('DOMContentLoaded', initializeApp);
+});
