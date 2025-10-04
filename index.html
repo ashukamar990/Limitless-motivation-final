@@ -1,0 +1,1910 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Buyzo Cart — Modern Shop</title>
+  <meta name="description" content="Buyzo Cart — clean, mobile‑first shop template with product cards, step checkout, and policy modals."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://images.unsplash.com"/>
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+  <style>
+    /* Existing CSS styles remain the same... */
+    
+    /* NEW: Advertisement Banner Slider Styles */
+    .ad-banner-section {
+      margin: 24px 0;
+      position: relative;
+    }
+    
+    .ad-banner-container {
+      overflow: hidden;
+      border-radius: var(--radius);
+      position: relative;
+    }
+    
+    .ad-banner-track {
+      display: flex;
+      transition: transform 0.5s ease;
+    }
+    
+    .ad-banner-slide {
+      flex: 0 0 100%;
+      height: 180px;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      border-radius: var(--radius);
+    }
+    
+    .ad-banner-nav {
+      position: absolute;
+      bottom: 10px;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      z-index: 10;
+    }
+    
+    .ad-banner-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.5);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    
+    .ad-banner-dot.active {
+      background: rgba(255, 255, 255, 1);
+      transform: scale(1.2);
+    }
+    
+    .ad-banner-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255, 255, 255, 0.8);
+      border: none;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 18px;
+      color: var(--ink);
+      transition: all 0.2s ease;
+      z-index: 10;
+    }
+    
+    .ad-banner-arrow:hover {
+      background: rgba(255, 255, 255, 1);
+    }
+    
+    .ad-banner-arrow.prev {
+      left: 10px;
+    }
+    
+    .ad-banner-arrow.next {
+      right: 10px;
+    }
+    
+    /* NEW: Category Section Styles */
+    .category-section {
+      margin: 24px 0;
+      text-align: center;
+    }
+    
+    .category-title {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      color: var(--ink);
+    }
+    
+    .category-container {
+      display: flex;
+      overflow-x: auto;
+      gap: 20px;
+      padding: 10px 0;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+    
+    .category-container::-webkit-scrollbar {
+      display: none;
+    }
+    
+    .category-item {
+      flex: 0 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    
+    .category-item:hover {
+      transform: translateY(-5px);
+    }
+    
+    .category-logo {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      background-size: cover;
+      background-position: center;
+      background-color: #f1f5f9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      color: var(--accent);
+      border: 2px solid var(--border);
+    }
+    
+    .category-name {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--ink);
+      white-space: nowrap;
+    }
+    
+    /* NEW: User Profile Page Styles */
+    .user-profile-page {
+      padding: 20px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    
+    .profile-header {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+    
+    .profile-avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background-size: cover;
+      background-position: center;
+      background-color: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 32px;
+      font-weight: 600;
+    }
+    
+    .profile-info h2 {
+      margin: 0 0 8px 0;
+      font-size: 24px;
+    }
+    
+    .profile-info p {
+      margin: 0;
+      color: var(--muted);
+    }
+    
+    .profile-section {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: var(--shadow);
+      margin-bottom: 24px;
+      border: 1px solid var(--border);
+    }
+    
+    .profile-section h3 {
+      margin-top: 0;
+      margin-bottom: 20px;
+      color: var(--accent);
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 12px;
+    }
+    
+    .saved-addresses {
+      margin-top: 16px;
+    }
+    
+    .address-card {
+      background: #f8fafc;
+      border-radius: var(--radius);
+      padding: 16px;
+      margin-bottom: 12px;
+      border: 1px solid var(--border);
+    }
+    
+    .address-card.active {
+      border-color: var(--accent);
+      background: var(--ring);
+    }
+    
+    .address-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 12px;
+    }
+    
+    /* NEW: Forgot Password Link Styles */
+    .forgot-password {
+      display: block;
+      text-align: right;
+      margin-top: 8px;
+      color: var(--accent);
+      font-size: 14px;
+      cursor: pointer;
+    }
+    
+    .forgot-password:hover {
+      text-decoration: underline;
+    }
+    
+    /* NEW: Product Share Link Styles */
+    .share-link-container {
+      display: flex;
+      gap: 10px;
+      margin-top: 12px;
+    }
+    
+    .share-link {
+      flex: 1;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: #f8fafc;
+      font-size: 14px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    
+    .copy-link-btn {
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: var(--radius);
+      padding: 10px 16px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.2s ease;
+    }
+    
+    .copy-link-btn:hover {
+      background: var(--accent-hover);
+    }
+    
+    /* Fix for wishlist button - ensure it turns red */
+    .wishlist-btn.active {
+      color: var(--error) !important;
+      background: #fee2e2 !important;
+      border-color: var(--error) !important;
+    }
+
+    .wishlist-btn.active:hover {
+      background: #fecaca !important;
+    }
+
+    #detailWishlistBtn.active {
+      background: var(--error) !important;
+      color: white !important;
+      border-color: var(--error) !important;
+    }
+
+    #detailWishlistBtn.active:hover {
+      background: #dc2626 !important;
+    }
+    
+    /* Fix for image zoom modal */
+    .zoom-modal .zoom-close {
+      background: rgba(0, 0, 0, 0.7);
+      color: white;
+      z-index: 100;
+    }
+    
+    /* Fix for product slider */
+    .product-img-slider-container {
+      touch-action: pan-y;
+    }
+  </style>
+</head>
+<body>
+  <!-- Mobile Menu Overlay -->
+  <div class="menu-overlay" id="menuOverlay"></div>
+  
+  <!-- Mobile Menu - Updated with user profile -->
+  <div class="mobile-menu" id="mobileMenu">
+    <div class="menu-header">
+      <div class="brand">
+        <span class="chip">BUYZO</span>
+        <span>Cart</span>
+      </div>
+      <div class="menu-close" id="menuClose">×</div>
+    </div>
+    <div class="menu-items">
+      <div class="menu-item" onclick="showPage('homePage'); closeMenu();">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+          <polyline points="9 22 9 12 15 12 15 22"></polyline>
+        </svg>
+        Home
+      </div>
+      <div class="menu-item" onclick="showPage('productsPage'); closeMenu();">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="7" height="7"></rect>
+          <rect x="14" y="3" width="7" height="7"></rect>
+          <rect x="14" y="14" width="7" height="7"></rect>
+          <rect x="3" y="14" width="7" height="7"></rect>
+        </svg>
+        Products
+      </div>
+      <div class="menu-item" onclick="showMyOrders(); showPage('myOrdersPage'); closeMenu();">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="9" cy="21" r="1"></circle>
+          <circle cx="20" cy="21" r="1"></circle>
+          <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+        </svg>
+        My Orders
+      </div>
+      <div class="menu-item" onclick="showPage('wishlistPage'); closeMenu();">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+        </svg>
+        Wishlist
+      </div>
+      <!-- NEW: User Profile in Mobile Menu -->
+      <div class="menu-item" onclick="showPage('userProfilePage'); closeMenu();">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+          <circle cx="12" cy="7" r="4"></circle>
+        </svg>
+        My Profile
+      </div>
+      <div class="menu-item" onclick="showPage('cancellationPage'); closeMenu();">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="15" y1="9" x2="9" y2="15"></line>
+          <line x1="9" y1="9" x2="15" y2="15"></line>
+        </svg>
+        Refund & Cancellation
+      </div>
+      <div class="menu-item" onclick="showPage('termsPage'); closeMenu();">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+          <line x1="16" y1="13" x2="8" y2="13"></line>
+          <line x1="16" y1="17" x2="8" y2="17"></line>
+          <polyline points="10 9 9 9 8 9"></polyline>
+        </svg>
+        Terms & Conditions
+      </div>
+      
+      <!-- NEW: Login/Signup at the bottom of mobile menu -->
+      <div class="menu-item" id="mobileLoginBtn" onclick="showLoginModal(); closeMenu();">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M13.5 12H3"></path>
+        </svg>
+        Login / Sign Up
+      </div>
+      <div class="menu-item" id="mobileUserProfile" style="display:none;" onclick="showPage('userProfilePage'); closeMenu();">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+          <circle cx="12" cy="7" r="4"></circle>
+        </svg>
+        <span id="mobileUserName">User</span>
+      </div>
+      <div class="menu-item" id="mobileLogoutBtn" style="display:none;" onclick="logoutUser(); closeMenu();">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"></path>
+        </svg>
+        Logout
+      </div>
+    </div>
+  </div>
+
+  <header>
+    <div class="header-inner">
+      <div class="menu-icon" id="menuIcon">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <div class="brand" aria-label="Buyzo Cart brand" onclick="showPage('homePage')">
+        <span class="chip">BUYZO</span>
+        <span>Cart</span>
+      </div>
+      <div class="cta">
+        <button class="btn secondary" id="openContactTop" title="Contact">Contact</button>
+        <button class="btn secondary" id="openMyOrdersTop" title="My Orders">My Orders
+          <span id="ordersNotification" class="notification-badge" style="display:none"></span>
+        </button>
+        <!-- NEW: User Profile Button -->
+        <button class="btn secondary" id="openUserProfileTop" title="My Profile" style="display:none;">My Profile</button>
+        <!-- Login/Signup buttons -->
+        <button class="btn secondary" id="openLoginTop" title="Login">Login</button>
+        <div class="user-profile" id="userProfile" style="display:none;">
+          <div class="user-avatar" id="userAvatar">U</div>
+          <div class="user-name" id="userName">User</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Home Page -->
+    <section class="page active" id="homePage">
+      
+      <section class="hero">
+        <h1>Welcome to <span style="color:var(--accent)">Buyzo Cart</span></h1>
+        <p>Clean, fast checkout. Hand‑picked products. Fully responsive UI.</p>
+
+        <!-- Rotating subtle messages -->
+        <div class="hero-messages" id="heroMessages">
+          <span class="active">🔥 Big Sale Today</span>
+          <span>🚚 Free Shipping over ₹999</span>
+          <span>✨ New Arrivals Just Dropped</span>
+        </div>
+
+        <!-- Highlight CTA strip -->
+        <div class="highlight-strip" onclick="showPage('productsPage')">
+          Limited Time Offer: Flat 40% OFF on all Fashion Items — <u>Shop Now →</u>
+        </div>
+      </section>
+
+      <!-- TRENDING NOW SECTION -->
+      <div class="trending-section">
+        <div class="trending-header">
+          <h2 class="trending-title">Trending Now</h2>
+        </div>
+        <div class="slider-container">
+          <div class="slider-track" id="productSlider"></div>
+        </div>
+      </div>
+
+      <!-- NEW: ADVERTISEMENT BANNER SECTION -->
+      <div class="ad-banner-section" id="adBannerSection" style="display:none;">
+        <div class="ad-banner-container">
+          <div class="ad-banner-track" id="adBannerTrack"></div>
+          <button class="ad-banner-arrow prev">&#10094;</button>
+          <button class="ad-banner-arrow next">&#10095;</button>
+          <div class="ad-banner-nav" id="adBannerNav"></div>
+        </div>
+      </div>
+
+      <!-- NEW: CATEGORY SECTION -->
+      <div class="category-section" id="categorySection" style="display:none;">
+        <h2 class="category-title">Shop by Category</h2>
+        <div class="category-container" id="categoryContainer"></div>
+      </div>
+
+      <!-- SEARCH BAR -->
+      <div class="search-wrap">
+        <input id="homeSearchInput" placeholder="Search products (e.g. 'Sneakers', 'T-shirt', 'Earbuds')" />
+      </div>
+
+      <!-- Search Results Grid -->
+      <div id="homeSearchResults" style="display:none;"></div>
+
+      <div class="steps center">
+        <div class="step-pill" id="pill-products">1 • Products</div>
+        <div class="step-pill disabled" id="pill-order">2 • Order Details</div>
+        <div class="step-pill disabled" id="pill-user">3 • Your Info</div>
+        <div class="step-pill disabled" id="pill-pay">4 • Payment</div>
+      </div>
+
+      <div class="card-panel" style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
+        <h2 style="margin:0">Featured Products</h2>
+      </div>
+
+      <!-- Featured Products Grid -->
+      <div class="grid" id="homeProductGrid">
+        <!-- Product cards will be loaded here -->
+      </div>
+
+      <!-- NEW: Recently Viewed Products Section -->
+      <div class="recently-viewed" id="recentlyViewedSection" style="display:none;">
+        <h2 class="recently-viewed-title">Recently Viewed</h2>
+        <div class="slider-container">
+          <div class="slider-track" id="recentlyViewedSlider"></div>
+        </div>
+      </div>
+
+      <!-- NEW: Newsletter Subscription Section -->
+      <div class="newsletter-section">
+        <h2 class="newsletter-title">Stay Updated</h2>
+        <p class="newsletter-desc">Subscribe to our newsletter for exclusive deals, new arrivals, and special offers delivered to your inbox.</p>
+        <div class="newsletter-form">
+          <input type="email" class="newsletter-input" placeholder="Enter your email" id="newsletterEmail" />
+          <button class="newsletter-btn" id="subscribeBtn">Subscribe</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Products Page -->
+    <section class="page" id="productsPage">
+      <div class="card-panel" style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
+        <h2 style="margin:0">All Products</h2>
+      </div>
+
+      <!-- Price Filter - Simplified -->
+      <div class="price-filter">
+        <div class="price-filter-title">Filter by Price</div>
+        <div class="price-range-slider">
+          <input type="range" min="0" max="5000" value="0" class="price-slider" id="minPriceSlider">
+          <input type="range" min="0" max="5000" value="5000" class="price-slider" id="maxPriceSlider">
+          <div class="price-range-values">
+            <span id="minPriceValue">₹0</span>
+            <span id="maxPriceValue">₹5000</span>
+          </div>
+        </div>
+        <div class="price-range" style="margin-top: 12px;">
+          <input type="number" class="price-input" id="minPrice" placeholder="Min" min="0" />
+          <span>to</span>
+          <input type="number" class="price-input" id="maxPrice" placeholder="Max" min="0" />
+          <button class="btn secondary" id="applyPriceFilter">Apply</button>
+          <button class="btn secondary" id="resetPriceFilter">Reset</button>
+        </div>
+      </div>
+
+      <!-- Search bar -->
+      <div class="search-wrap">
+        <input id="searchInput" placeholder="Search products (e.g. 'Sneakers', 'T-shirt', 'Earbuds')" />
+      </div>
+
+      <!-- Category Navigation -->
+      <div class="categories" id="categoriesContainer">
+        <!-- Categories will be loaded from Firebase by admin -->
+      </div>
+
+      <div class="grid" id="productGrid">
+        <!-- Product cards will be loaded here -->
+      </div>
+    </section>
+
+    <!-- NEW: User Profile Page -->
+    <section class="page" id="userProfilePage">
+      <div class="user-profile-page">
+        <div class="back-button" onclick="showPage('homePage')">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px;">
+            <path d="M19 12H5M12 19l-7-7 7-7"/>
+          </svg>
+          Back to Home
+        </div>
+        
+        <div class="profile-header">
+          <div class="profile-avatar" id="profileAvatar">U</div>
+          <div class="profile-info">
+            <h2 id="profileName">User Name</h2>
+            <p id="profileEmail">user@example.com</p>
+          </div>
+        </div>
+        
+        <div class="profile-section">
+          <h3>Personal Information</h3>
+          <div class="row">
+            <div class="col">
+              <label>Full Name</label>
+              <input type="text" id="profileFullName" placeholder="Enter your full name">
+            </div>
+            <div class="col">
+              <label>Email Address</label>
+              <input type="email" id="profileEmailInput" placeholder="Enter your email" readonly>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <label>Phone Number</label>
+              <input type="tel" id="profilePhone" placeholder="Enter your phone number">
+            </div>
+          </div>
+          <button class="btn" style="margin-top: 16px;" id="saveProfileInfo">Save Changes</button>
+        </div>
+        
+        <div class="profile-section">
+          <h3>Saved Addresses</h3>
+          <div class="saved-addresses" id="savedAddresses">
+            <!-- Saved addresses will be displayed here -->
+          </div>
+          <button class="btn secondary" style="margin-top: 16px;" onclick="showAddAddressForm()">Add New Address</button>
+        </div>
+        
+        <div class="profile-section">
+          <h3>Account Settings</h3>
+          <button class="btn secondary" style="margin-bottom: 12px;" onclick="changePassword()">Change Password</button>
+          <button class="btn error" onclick="logoutUser()">Logout</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Product Detail Page -->
+    <section class="page" id="productDetailPage">
+      <div class="product-detail-page">
+        <!-- Breadcrumb Navigation -->
+        <div class="breadcrumb">
+          <a href="#" onclick="showPage('homePage')">Home</a>
+          <span>></span>
+          <a href="#" onclick="showPage('productsPage')">Products</a>
+          <span>></span>
+          <span id="breadcrumbProductName">Product Details</span>
+        </div>
+        
+        <div class="back-to-products" onclick="showPage('productsPage')">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px;">
+            <path d="M19 12H5M12 19l-7-7 7-7"/>
+          </svg>
+          Back to Products
+        </div>
+        
+        <div class="product-detail-container">
+          <div class="product-detail-gallery">
+            <!-- Enhanced gallery with zoom -->
+            <div class="product-gallery-zoom">
+              <div class="product-detail-main-image" id="detailMainImage" onclick="openImageZoom()">
+                <button class="detail-carousel-control prev">&#10094;</button>
+                <button class="detail-carousel-control next">&#10095;</button>
+                <div class="detail-carousel-dots" id="detailCarouselDots"></div>
+                <div class="zoom-indicator">Click to zoom</div>
+              </div>
+            </div>
+            <div class="product-detail-thumbnails" id="detailThumbnails"></div>
+          </div>
+          
+          <div class="product-detail-info">
+            <h1 class="product-detail-title" id="detailTitle"></h1>
+            <!-- Product SKU -->
+            <div class="product-sku" id="detailSku"></div>
+            <div class="product-detail-price" id="detailPrice"></div>
+            <!-- Stock Status -->
+            <div class="stock-status in-stock" id="detailStockStatus">In Stock</div>
+            <div class="product-detail-desc" id="detailDesc"></div>
+            <div class="product-detail-full-desc" id="detailFullDesc"></div>
+            
+            <!-- NEW: Product Share Link -->
+            <div class="share-link-container">
+              <div class="share-link" id="productShareLink">Loading...</div>
+              <button class="copy-link-btn" id="copyLinkBtn">Copy</button>
+            </div>
+            
+            <!-- Quick Actions -->
+            <div class="quick-actions">
+              <button class="quick-action-btn" id="detailShareBtn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-1.61L23 6H6"></path>
+                  <polyline points="16 6 12 2 8 6"></polyline>
+                  <line x1="12" y1="2" x2="12" y2="15"></line>
+                </svg>
+                Share
+              </button>
+            </div>
+            
+            <div class="product-detail-meta">
+              <h4>Product Details</h4>
+              <div id="detailMeta"></div>
+            </div>
+            
+            <!-- Social Sharing Buttons -->
+            <div class="social-sharing">
+              <button class="share-btn facebook" data-platform="facebook">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                </svg>
+                Share
+              </button>
+              <button class="share-btn twitter" data-platform="twitter">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+                </svg>
+                Tweet
+              </button>
+              <button class="share-btn whatsapp" data-platform="whatsapp">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                </svg>
+                Share
+              </button>
+            </div>
+            
+            <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:20px;">
+              <button class="btn" id="detailOrderBtn">Order Now</button>
+              <button class="btn secondary" id="detailWishlistBtn">Add to Wishlist</button>
+              <button class="btn secondary" onclick="showPage('productsPage')">Continue Shopping</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Similar Products Section -->
+        <div class="similar-products">
+          <h2 class="similar-title">Similar Products</h2>
+          <div class="slider-container">
+            <div class="slider-track" id="similarProductsSlider"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Other pages (Order Details, User Info, Payment, etc.) remain the same -->
+    <!-- ... -->
+
+    <!-- NEW: Add Address Modal -->
+    <div class="modal-overlay" id="addAddressModal">
+      <div class="cancellation-modal">
+        <h3>Add New Address</h3>
+        <div>
+          <label>Full Name *</label>
+          <input type="text" id="newAddressName" placeholder="Enter full name">
+        </div>
+        <div style="margin-top: 16px;">
+          <label>Mobile Number *</label>
+          <input type="tel" id="newAddressMobile" placeholder="10-digit mobile number">
+        </div>
+        <div style="margin-top: 16px;">
+          <label>Pincode *</label>
+          <input type="text" id="newAddressPincode" placeholder="Pincode">
+        </div>
+        <div style="margin-top: 16px;">
+          <label>City *</label>
+          <input type="text" id="newAddressCity" placeholder="City">
+        </div>
+        <div style="margin-top: 16px;">
+          <label>State *</label>
+          <input type="text" id="newAddressState" placeholder="State">
+        </div>
+        <div style="margin-top: 16px;">
+          <label>House / Street *</label>
+          <textarea id="newAddressHouse" placeholder="House number, street, area" rows="3"></textarea>
+        </div>
+        <div class="cancellation-actions">
+          <button class="btn secondary" id="cancelAddAddress">Cancel</button>
+          <button class="btn" id="saveNewAddress">Save Address</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Updated Login/Signup Modal with Forgot Password -->
+    <div class="modal-overlay" id="authModal">
+      <div class="auth-modal">
+        <button class="auth-close" id="authModalClose">×</button>
+        <h3>Welcome to Buyzo Cart</h3>
+        
+        <div class="auth-tabs">
+          <div class="auth-tab active" data-tab="login">Login</div>
+          <div class="auth-tab" data-tab="signup">Sign Up</div>
+        </div>
+        
+        <form class="auth-form active" id="loginForm">
+          <div class="auth-form-group">
+            <label>Email</label>
+            <input type="email" id="loginEmail" placeholder="Enter your email" required>
+          </div>
+          <div class="auth-form-group">
+            <label>Password</label>
+            <input type="password" id="loginPassword" placeholder="Enter your password" required>
+          </div>
+          <!-- NEW: Forgot Password Link -->
+          <a class="forgot-password" onclick="showForgotPassword()">Forgot Password?</a>
+          <button type="submit" class="btn" style="width:100%">Login</button>
+          <div class="auth-form-footer">
+            Don't have an account? <a onclick="switchAuthTab('signup')">Sign up</a>
+          </div>
+        </form>
+        
+        <form class="auth-form" id="signupForm">
+          <div class="auth-form-group">
+            <label>Full Name</label>
+            <input type="text" id="signupName" placeholder="Enter your full name" required>
+          </div>
+          <div class="auth-form-group">
+            <label>Email</label>
+            <input type="email" id="signupEmail" placeholder="Enter your email" required>
+          </div>
+          <div class="auth-form-group">
+            <label>Password</label>
+            <input type="password" id="signupPassword" placeholder="Create a password" required>
+          </div>
+          <div class="auth-form-group">
+            <label>Confirm Password</label>
+            <input type="password" id="signupConfirmPassword" placeholder="Confirm your password" required>
+          </div>
+          <button type="submit" class="btn" style="width:100%">Create Account</button>
+          <div class="auth-form-footer">
+            Already have an account? <a onclick="switchAuthTab('login')">Login</a>
+          </div>
+        </form>
+        
+        <div class="divider">
+          <span>or continue with</span>
+        </div>
+        
+        <button class="google-signin-btn" id="googleSignInBtn">
+          <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google">
+          Continue with Google
+        </button>
+      </div>
+    </div>
+
+    <!-- NEW: Forgot Password Modal -->
+    <div class="modal-overlay" id="forgotPasswordModal">
+      <div class="auth-modal">
+        <button class="auth-close" id="forgotPasswordClose">×</button>
+        <h3>Reset Password</h3>
+        <p style="margin-bottom: 20px; color: var(--muted);">Enter your email address and we'll send you a link to reset your password.</p>
+        
+        <form id="forgotPasswordForm">
+          <div class="auth-form-group">
+            <label>Email</label>
+            <input type="email" id="forgotPasswordEmail" placeholder="Enter your email" required>
+          </div>
+          <button type="submit" class="btn" style="width:100%">Send Reset Link</button>
+        </form>
+        
+        <div class="auth-form-footer" style="margin-top: 20px;">
+          Remember your password? <a onclick="showLoginModal()">Login</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Other modals remain the same -->
+    <!-- ... -->
+
+  </main>
+
+  <!-- Copyright Section -->
+  <div class="copyright">
+    © 2023 Buyzo Cart. All rights reserved.
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="toast">
+    <div class="toast-icon">✓</div>
+    <div id="toast-message"></div>
+  </div>
+
+  <script>
+    // Firebase configuration and initialization
+    const firebaseConfig = {
+      apiKey: "AIzaSyAeB7VzIxJaNYagUPoKd-kN5HXmLbS2-Vw",
+      authDomain: "videomanager-23d98.firebaseapp.com",
+      databaseURL: "https://videomanager-23d98-default-rtdb.firebaseio.com",
+      projectId: "videomanager-23d98",
+      storageBucket: "videomanager-23d98.firebasestorage.app",
+      messagingSenderId: "847321523576",
+      appId: "1:847321523576:web:bda3f5026e3e163603548d",
+      measurementId: "G-YBSJ1KMPV4"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    
+    // Initialize Realtime Database and Authentication
+    const realtimeDB = firebase.database();
+    const auth = firebase.auth();
+    const provider = new firebase.auth.GoogleAuthProvider();
+    provider.setCustomParameters({ prompt: "select_account" });
+
+    /***********************
+     * Global Variables
+     ***********************/
+    let PRODUCTS = [];
+    let productsLoaded = false;
+    let recentlyViewed = [];
+    let currentUser = null;
+    let users = [];
+    let selectedProduct = null;
+    let selectedSize = 'S';
+    let selectedQty = 1;
+    let userInfo = {};
+    
+    // NEW: Advertisement banners and categories
+    let AD_BANNERS = [];
+    let CATEGORIES = [];
+
+    /***********************
+     * Load Data Functions
+     ***********************/
+
+    // Load products from Realtime Database with offline support
+    function loadProductsFromRealtimeDB() {
+      // First try to load from localStorage
+      const cachedProducts = localStorage.getItem('cached_products');
+      if (cachedProducts) {
+        try {
+          PRODUCTS = JSON.parse(cachedProducts);
+          renderHomePreview();
+          renderProductSlider();
+          productsLoaded = true;
+        } catch (e) {
+          console.error("Error parsing cached products:", e);
+        }
+      }
+
+      // Then try to load from Realtime Database
+      const productsRef = realtimeDB.ref('products');
+      productsRef.on('value', (snapshot) => {
+        const products = [];
+        snapshot.forEach((childSnapshot) => {
+          const productData = childSnapshot.val();
+          // Map the product data to the expected structure
+          products.push({
+            id: childSnapshot.key,
+            title: productData.name || 'No Name',
+            price: productData.price || 0,
+            desc: productData.description || '',
+            fullDesc: productData.fullDesc || productData.description || '',
+            images: productData.images ? productData.images : (productData.image ? [productData.image] : []),
+            sizes: productData.sizes || ['S', 'M', 'L'],
+            category: productData.category || 'Uncategorized',
+            // Additional product properties
+            sku: productData.sku || 'SKU-' + childSnapshot.key,
+            stock: productData.stock || Math.floor(Math.random() * 50) + 10,
+            // Featured and trending flags from admin panel
+            featured: productData.featured || false,
+            trending: productData.trending || false,
+            // Minimum quantity from admin panel
+            minQty: productData.minQty || 1
+          });
+        });
+        
+        // Update the PRODUCTS array
+        PRODUCTS = products;
+        
+        // Cache to localStorage
+        localStorage.setItem('cached_products', JSON.stringify(PRODUCTS));
+        
+        // Update UI if not already loaded
+        if (!productsLoaded) {
+          renderHomePreview();
+          renderProductSlider();
+          productsLoaded = true;
+        } else {
+          // Update the product slider with new data
+          renderProductSlider();
+        }
+      }, (error) => {
+        console.error("Error loading products:", error);
+        // If we have cached products, use them
+        if (PRODUCTS.length === 0) {
+          loadDemoProducts();
+        }
+      });
+    }
+
+    // Load categories from Realtime Database
+    function loadCategories() {
+      const categoriesRef = realtimeDB.ref('categories');
+      categoriesRef.on('value', (snapshot) => {
+        const categories = [];
+        snapshot.forEach((childSnapshot) => {
+          const categoryData = childSnapshot.val();
+          categories.push({
+            id: childSnapshot.key,
+            name: categoryData.name,
+            logo: categoryData.logo || '🛍️' // Default icon if no logo
+          });
+        });
+        
+        CATEGORIES = categories;
+        renderCategories(categories);
+        renderCategorySection(categories);
+      }, (error) => {
+        console.error("Error loading categories:", error);
+        // If categories fail to load, use default ones
+        const defaultCategories = [
+          { id: '1', name: 'Men', logo: '👔' },
+          { id: '2', name: 'Women', logo: '👗' },
+          { id: '3', name: 'Kids', logo: '👶' },
+          { id: '4', name: 'Electronics', logo: '📱' },
+          { id: '5', name: 'Home', logo: '🏠' },
+          { id: '6', name: 'Accessories', logo: '👜' }
+        ];
+        CATEGORIES = defaultCategories;
+        renderCategories(defaultCategories);
+        renderCategorySection(defaultCategories);
+      });
+    }
+
+    // NEW: Load advertisement banners from Realtime Database
+    function loadAdBanners() {
+      const bannersRef = realtimeDB.ref('adBanners');
+      bannersRef.on('value', (snapshot) => {
+        const banners = [];
+        snapshot.forEach((childSnapshot) => {
+          const bannerData = childSnapshot.val();
+          banners.push({
+            id: childSnapshot.key,
+            image: bannerData.image,
+            title: bannerData.title,
+            link: bannerData.link || '#'
+          });
+        });
+        
+        AD_BANNERS = banners;
+        renderAdBanners(banners);
+      }, (error) => {
+        console.error("Error loading ad banners:", error);
+        // If banners fail to load, hide the section
+        document.getElementById('adBannerSection').style.display = 'none';
+      });
+    }
+
+    /***********************
+     * Rendering Functions
+     ***********************/
+
+    // Render categories for products page
+    function renderCategories(categories) {
+      const container = document.getElementById('categoriesContainer');
+      if (!container) return;
+      
+      container.innerHTML = '';
+      
+      // Add "All" category
+      const allPill = document.createElement('div');
+      allPill.className = 'category-pill active';
+      allPill.textContent = 'All';
+      allPill.onclick = () => {
+        document.querySelectorAll('.category-pill').forEach(pill => {
+          pill.classList.remove('active');
+        });
+        allPill.classList.add('active');
+        renderProductGrid();
+      };
+      container.appendChild(allPill);
+      
+      categories.forEach(category => {
+        const pill = document.createElement('div');
+        pill.className = 'category-pill';
+        pill.textContent = category.name;
+        pill.onclick = () => filterProductsByCategory(category.name);
+        container.appendChild(pill);
+      });
+    }
+
+    // NEW: Render category section for home page
+    function renderCategorySection(categories) {
+      const container = document.getElementById('categoryContainer');
+      const section = document.getElementById('categorySection');
+      
+      if (!container || categories.length === 0) {
+        if (section) section.style.display = 'none';
+        return;
+      }
+      
+      container.innerHTML = '';
+      section.style.display = 'block';
+      
+      categories.forEach(category => {
+        const categoryItem = document.createElement('div');
+        categoryItem.className = 'category-item';
+        categoryItem.onclick = () => {
+          showPage('productsPage');
+          // Set active category in products page
+          setTimeout(() => {
+            document.querySelectorAll('.category-pill').forEach(pill => {
+              pill.classList.remove('active');
+              if (pill.textContent === category.name) {
+                pill.classList.add('active');
+              }
+            });
+            filterProductsByCategory(category.name);
+          }, 100);
+        };
+        
+        categoryItem.innerHTML = `
+          <div class="category-logo">
+            ${category.logo}
+          </div>
+          <div class="category-name">${category.name}</div>
+        `;
+        
+        container.appendChild(categoryItem);
+      });
+    }
+
+    // NEW: Render advertisement banners
+    function renderAdBanners(banners) {
+      const container = document.getElementById('adBannerTrack');
+      const navContainer = document.getElementById('adBannerNav');
+      const section = document.getElementById('adBannerSection');
+      
+      if (!container || banners.length === 0) {
+        if (section) section.style.display = 'none';
+        return;
+      }
+      
+      container.innerHTML = '';
+      navContainer.innerHTML = '';
+      section.style.display = 'block';
+      
+      banners.forEach((banner, index) => {
+        // Create banner slide
+        const slide = document.createElement('div');
+        slide.className = 'ad-banner-slide';
+        slide.style.backgroundImage = `url('${banner.image}')`;
+        slide.onclick = () => {
+          if (banner.link && banner.link !== '#') {
+            window.open(banner.link, '_blank');
+          }
+        };
+        container.appendChild(slide);
+        
+        // Create navigation dot
+        const dot = document.createElement('div');
+        dot.className = `ad-banner-dot ${index === 0 ? 'active' : ''}`;
+        dot.onclick = () => {
+          currentAdIndex = index;
+          updateAdBanner();
+        };
+        navContainer.appendChild(dot);
+      });
+      
+      // Initialize ad banner slider
+      initAdBannerSlider();
+    }
+
+    // NEW: Initialize ad banner slider
+    let currentAdIndex = 0;
+    let adInterval;
+    
+    function initAdBannerSlider() {
+      const track = document.getElementById('adBannerTrack');
+      const prevBtn = document.querySelector('.ad-banner-arrow.prev');
+      const nextBtn = document.querySelector('.ad-banner-arrow.next');
+      const dots = document.querySelectorAll('.ad-banner-dot');
+      
+      if (!track || AD_BANNERS.length <= 1) return;
+      
+      // Previous button
+      prevBtn.onclick = () => {
+        currentAdIndex = (currentAdIndex - 1 + AD_BANNERS.length) % AD_BANNERS.length;
+        updateAdBanner();
+      };
+      
+      // Next button
+      nextBtn.onclick = () => {
+        currentAdIndex = (currentAdIndex + 1) % AD_BANNERS.length;
+        updateAdBanner();
+      };
+      
+      // Auto-advance banners
+      clearInterval(adInterval);
+      adInterval = setInterval(() => {
+        currentAdIndex = (currentAdIndex + 1) % AD_BANNERS.length;
+        updateAdBanner();
+      }, 5000);
+      
+      // Add touch support for mobile
+      let startX = 0;
+      let endX = 0;
+      
+      track.addEventListener('touchstart', (e) => {
+        startX = e.touches[0].clientX;
+      });
+      
+      track.addEventListener('touchend', (e) => {
+        endX = e.changedTouches[0].clientX;
+        handleSwipe();
+      });
+      
+      function handleSwipe() {
+        const diff = startX - endX;
+        if (Math.abs(diff) > 50) { // Minimum swipe distance
+          if (diff > 0) {
+            // Swipe left - next
+            currentAdIndex = (currentAdIndex + 1) % AD_BANNERS.length;
+          } else {
+            // Swipe right - previous
+            currentAdIndex = (currentAdIndex - 1 + AD_BANNERS.length) % AD_BANNERS.length;
+          }
+          updateAdBanner();
+        }
+      }
+    }
+    
+    function updateAdBanner() {
+      const track = document.getElementById('adBannerTrack');
+      const dots = document.querySelectorAll('.ad-banner-dot');
+      
+      if (!track) return;
+      
+      track.style.transform = `translateX(-${currentAdIndex * 100}%)`;
+      
+      // Update dots
+      dots.forEach((dot, index) => {
+        dot.classList.toggle('active', index === currentAdIndex);
+      });
+    }
+
+    // Filter products by category
+    function filterProductsByCategory(category) {
+      // Highlight selected category
+      document.querySelectorAll('.category-pill').forEach(pill => {
+        pill.classList.remove('active');
+        if (pill.textContent === category) {
+          pill.classList.add('active');
+        }
+      });
+      
+      // Filter products
+      const filtered = category === 'All' ? PRODUCTS : PRODUCTS.filter(p => p.category === category);
+      renderProductGrid(filtered);
+    }
+
+    // Render home page product preview
+    function renderHomePreview() {
+      const container = document.getElementById('homeProductGrid');
+      if (!container) return;
+      
+      container.innerHTML = '';
+      
+      // Show only featured products on home page
+      const featuredProducts = PRODUCTS.filter(p => p.featured).slice(0, 6);
+      
+      featuredProducts.forEach(product => {
+        const card = createProductCard(product);
+        container.appendChild(card);
+      });
+    }
+
+    // Render product grid for products page
+    function renderProductGrid(products = PRODUCTS) {
+      const container = document.getElementById('productGrid');
+      if (!container) return;
+      
+      container.innerHTML = '';
+      
+      if (products.length === 0) {
+        container.innerHTML = '<div class="card-panel center">No products found matching your criteria.</div>';
+        return;
+      }
+      
+      products.forEach(product => {
+        const card = createProductCard(product);
+        container.appendChild(card);
+      });
+    }
+
+    // Create product card element - FIXED to avoid "object object" issue
+    function createProductCard(product) {
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.setAttribute('data-id', product.id);
+      
+      // Get the first image or placeholder
+      const firstImage = product.images && product.images.length > 0 
+        ? product.images[0] 
+        : 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80';
+      
+      // Product card with image slider
+      card.innerHTML = `
+        <div class="product-img-slider-container">
+          <div class="product-img-slider" style="background-image: url('${firstImage}')"></div>
+          <button class="product-card-control prev">&#10094;</button>
+          <button class="product-card-control next">&#10095;</button>
+          <div class="product-card-dots"></div>
+        </div>
+        <div class="card-body">
+          <div class="title">${product.title}</div>
+          <div class="price">₹${product.price}</div>
+          <div class="badge">${product.desc}</div>
+          <div style="margin-top:auto;display:flex;gap:8px">
+            <button class="btn" style="flex:1" onclick="orderProduct('${product.id}')">Order Now</button>
+            <button class="btn secondary wishlist-btn" data-id="${product.id}">♡</button>
+          </div>
+        </div>
+      `;
+      
+      // Initialize image slider for product card
+      if (product.images && product.images.length > 1) {
+        initProductCardSlider(card, product);
+      }
+      
+      // Add click event to open product detail
+      card.addEventListener('click', (e) => {
+        // Don't trigger if clicked on buttons
+        if (!e.target.closest('button')) {
+          showProductDetail(product.id);
+        }
+      });
+      
+      // Add wishlist button event
+      const wishlistBtn = card.querySelector('.wishlist-btn');
+      wishlistBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        toggleWishlist(product.id);
+      });
+      
+      return card;
+    }
+
+    // Initialize image slider for product cards - FIXED to work properly
+    function initProductCardSlider(card, product) {
+      const slider = card.querySelector('.product-img-slider');
+      const prevBtn = card.querySelector('.product-card-control.prev');
+      const nextBtn = card.querySelector('.product-card-control.next');
+      const dotsContainer = card.querySelector('.product-card-dots');
+      
+      let currentIndex = 0;
+      
+      // Create dots
+      product.images.forEach((_, index) => {
+        const dot = document.createElement('div');
+        dot.className = `product-card-dot ${index === 0 ? 'active' : ''}`;
+        dot.addEventListener('click', (e) => {
+          e.stopPropagation();
+          currentIndex = index;
+          updateCardSlider();
+        });
+        dotsContainer.appendChild(dot);
+      });
+      
+      // Previous button
+      prevBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        currentIndex = (currentIndex - 1 + product.images.length) % product.images.length;
+        updateCardSlider();
+      });
+      
+      // Next button
+      nextBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        currentIndex = (currentIndex + 1) % product.images.length;
+        updateCardSlider();
+      });
+      
+      function updateCardSlider() {
+        slider.style.backgroundImage = `url('${product.images[currentIndex]}')`;
+        
+        // Update dots
+        dotsContainer.querySelectorAll('.product-card-dot').forEach((dot, index) => {
+          dot.classList.toggle('active', index === currentIndex);
+        });
+      }
+      
+      // Add touch support for mobile
+      let startX = 0;
+      let endX = 0;
+      
+      slider.addEventListener('touchstart', (e) => {
+        startX = e.touches[0].clientX;
+      });
+      
+      slider.addEventListener('touchend', (e) => {
+        endX = e.changedTouches[0].clientX;
+        handleSwipe();
+      });
+      
+      function handleSwipe() {
+        const diff = startX - endX;
+        if (Math.abs(diff) > 50) { // Minimum swipe distance
+          if (diff > 0) {
+            // Swipe left - next
+            currentIndex = (currentIndex + 1) % product.images.length;
+          } else {
+            // Swipe right - previous
+            currentIndex = (currentIndex - 1 + product.images.length) % product.images.length;
+          }
+          updateCardSlider();
+        }
+      }
+    }
+
+    /***********************
+     * Product Detail Functions
+     ***********************/
+
+    // Show product detail page
+    function showProductDetail(productId) {
+      const product = PRODUCTS.find(p => p.id === productId);
+      if (!product) return;
+      
+      // Add to recently viewed
+      addToRecentlyViewed(productId);
+      
+      // Update breadcrumb
+      document.getElementById('breadcrumbProductName').textContent = product.title;
+      
+      // Update main product details
+      document.getElementById('detailTitle').textContent = product.title;
+      document.getElementById('detailPrice').textContent = `₹${product.price}`;
+      document.getElementById('detailDesc').textContent = product.desc;
+      document.getElementById('detailFullDesc').textContent = product.fullDesc;
+      document.getElementById('detailSku').textContent = `SKU: ${product.sku}`;
+      
+      // NEW: Generate and display shareable product link
+      const productLink = generateProductLink(productId);
+      document.getElementById('productShareLink').textContent = productLink;
+      
+      // Update stock status
+      const stockStatus = document.getElementById('detailStockStatus');
+      if (product.stock > 10) {
+        stockStatus.textContent = 'In Stock';
+        stockStatus.className = 'stock-status in-stock';
+      } else if (product.stock > 0) {
+        stockStatus.textContent = 'Low Stock';
+        stockStatus.className = 'stock-status low-stock';
+      } else {
+        stockStatus.textContent = 'Out of Stock';
+        stockStatus.className = 'stock-status out-of-stock';
+      }
+      
+      // Update product meta
+      const metaContainer = document.getElementById('detailMeta');
+      metaContainer.innerHTML = `
+        <p><strong>Category:</strong> ${product.category}</p>
+        <p><strong>Available Sizes:</strong> ${product.sizes.join(', ')}</p>
+        <p><strong>Available Stock:</strong> ${product.stock} units</p>
+      `;
+      
+      // Update product images
+      updateProductDetailImages(product);
+      
+      // Update similar products
+      updateSimilarProducts(product);
+      
+      // Update order and wishlist buttons
+      document.getElementById('detailOrderBtn').onclick = () => orderProduct(productId);
+      document.getElementById('detailWishlistBtn').onclick = () => toggleWishlist(productId);
+      
+      // Update wishlist button state
+      updateWishlistButtonState(productId);
+      
+      // Show the product detail page
+      showPage('productDetailPage');
+    }
+
+    // NEW: Generate shareable product link
+    function generateProductLink(productId) {
+      const baseUrl = window.location.href.split('?')[0];
+      return `${baseUrl}?product=${productId}`;
+    }
+
+    // NEW: Check for product ID in URL parameters
+    function checkUrlForProduct() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const productId = urlParams.get('product');
+      
+      if (productId) {
+        // Check if product exists
+        const product = PRODUCTS.find(p => p.id === productId);
+        if (product) {
+          showProductDetail(productId);
+          return true;
+        }
+      }
+      return false;
+    }
+
+    /***********************
+     * Authentication Functions
+     ***********************/
+
+    // Initialize authentication state
+    auth.onAuthStateChanged(user => {
+      if (user) {
+        // User is signed in
+        currentUser = user;
+        updateUserUI(user);
+        
+        // Load user data from database
+        loadUserData(user.uid);
+      } else {
+        // User is signed out
+        currentUser = null;
+        updateUserUI(null);
+      }
+    });
+
+    // Load user data from database
+    function loadUserData(userId) {
+      const userRef = realtimeDB.ref('users/' + userId);
+      userRef.once('value').then(snapshot => {
+        const userData = snapshot.val();
+        if (userData) {
+          // User data exists, update UI accordingly
+          updateUserProfile(userData);
+        } else {
+          // User data doesn't exist, create it
+          createUserData(userId);
+        }
+      });
+    }
+
+    // Create user data in database
+    function createUserData(userId) {
+      const userData = {
+        uid: userId,
+        name: currentUser.displayName || 'User',
+        email: currentUser.email,
+        photoURL: currentUser.photoURL || '',
+        createdAt: new Date().toISOString(),
+        orders: [],
+        wishlist: [],
+        addresses: []
+      };
+      
+      realtimeDB.ref('users/' + userId).set(userData);
+      updateUserProfile(userData);
+    }
+
+    // Update user profile in database
+    function updateUserProfile(userData) {
+      // Update UI with user data
+      document.getElementById('userName').textContent = userData.name;
+      document.getElementById('mobileUserName').textContent = userData.name;
+      document.getElementById('profileName').textContent = userData.name;
+      document.getElementById('profileEmail').textContent = userData.email;
+      document.getElementById('profileEmailInput').value = userData.email;
+      document.getElementById('profileFullName').value = userData.name;
+      
+      if (userData.phone) {
+        document.getElementById('profilePhone').value = userData.phone;
+      }
+      
+      if (userData.photoURL) {
+        document.getElementById('userAvatar').innerHTML = `<img src="${userData.photoURL}" style="width:32px;height:32px;border-radius:50%;">`;
+        document.getElementById('profileAvatar').style.backgroundImage = `url('${userData.photoURL}')`;
+        document.getElementById('profileAvatar').innerHTML = '';
+      } else {
+        const initial = userData.name.charAt(0).toUpperCase();
+        document.getElementById('userAvatar').textContent = initial;
+        document.getElementById('profileAvatar').textContent = initial;
+      }
+      
+      // Update orders and wishlist counts
+      if (userData.orders && userData.orders.length > 0) {
+        document.getElementById('ordersNotification').textContent = userData.orders.length;
+        document.getElementById('ordersNotification').style.display = 'flex';
+      } else {
+        document.getElementById('ordersNotification').style.display = 'none';
+      }
+      
+      // Update saved addresses
+      if (userData.addresses) {
+        renderSavedAddresses(userData.addresses);
+      }
+    }
+
+    // Update UI based on authentication state
+    function updateUserUI(user) {
+      const loginBtn = document.getElementById('openLoginTop');
+      const userProfile = document.getElementById('userProfile');
+      const userProfileBtn = document.getElementById('openUserProfileTop');
+      const mobileLoginBtn = document.getElementById('mobileLoginBtn');
+      const mobileUserProfile = document.getElementById('mobileUserProfile');
+      const mobileLogoutBtn = document.getElementById('mobileLogoutBtn');
+      
+      if (user) {
+        // User is logged in
+        loginBtn.style.display = 'none';
+        userProfile.style.display = 'flex';
+        userProfileBtn.style.display = 'inline-flex';
+        mobileLoginBtn.style.display = 'none';
+        mobileUserProfile.style.display = 'flex';
+        mobileLogoutBtn.style.display = 'flex';
+        
+        // Update user info
+        document.getElementById('userName').textContent = user.displayName || 'User';
+        document.getElementById('mobileUserName').textContent = user.displayName || 'User';
+        
+        if (user.photoURL) {
+          document.getElementById('userAvatar').innerHTML = `<img src="${user.photoURL}" style="width:32px;height:32px;border-radius:50%;">`;
+        } else {
+          const initial = (user.displayName || 'User').charAt(0).toUpperCase();
+          document.getElementById('userAvatar').textContent = initial;
+        }
+      } else {
+        // User is logged out
+        loginBtn.style.display = 'inline-flex';
+        userProfile.style.display = 'none';
+        userProfileBtn.style.display = 'none';
+        mobileLoginBtn.style.display = 'flex';
+        mobileUserProfile.style.display = 'none';
+        mobileLogoutBtn.style.display = 'none';
+      }
+    }
+
+    // NEW: Show forgot password modal
+    function showForgotPassword() {
+      document.getElementById('authModal').classList.remove('active');
+      document.getElementById('forgotPasswordModal').classList.add('active');
+    }
+
+    // NEW: Handle forgot password form submission
+    document.getElementById('forgotPasswordForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const email = document.getElementById('forgotPasswordEmail').value;
+      
+      auth.sendPasswordResetEmail(email)
+        .then(() => {
+          showToast('Password reset email sent! Check your inbox.', 'success');
+          document.getElementById('forgotPasswordModal').classList.remove('active');
+          document.getElementById('forgotPasswordEmail').value = '';
+        })
+        .catch((error) => {
+          showToast('Error: ' + error.message, 'error');
+        });
+    });
+
+    /***********************
+     * User Profile Functions
+     ***********************/
+
+    // NEW: Render saved addresses
+    function renderSavedAddresses(addresses) {
+      const container = document.getElementById('savedAddresses');
+      if (!container) return;
+      
+      container.innerHTML = '';
+      
+      if (addresses.length === 0) {
+        container.innerHTML = '<p style="color: var(--muted); text-align: center;">No saved addresses yet.</p>';
+        return;
+      }
+      
+      addresses.forEach((address, index) => {
+        const addressCard = document.createElement('div');
+        addressCard.className = 'address-card';
+        if (index === 0) addressCard.classList.add('active'); // Mark first address as active
+        
+        addressCard.innerHTML = `
+          <div><strong>${address.name}</strong></div>
+          <div>${address.mobile}</div>
+          <div>${address.house}, ${address.city}, ${address.state} - ${address.pincode}</div>
+          <div class="address-actions">
+            <button class="btn secondary" onclick="editAddress(${index})">Edit</button>
+            <button class="btn error" onclick="deleteAddress(${index})">Delete</button>
+          </div>
+        `;
+        
+        container.appendChild(addressCard);
+      });
+    }
+
+    // NEW: Show add address form
+    function showAddAddressForm() {
+      document.getElementById('addAddressModal').classList.add('active');
+    }
+
+    // NEW: Save new address
+    document.getElementById('saveNewAddress').addEventListener('click', function() {
+      const name = document.getElementById('newAddressName').value;
+      const mobile = document.getElementById('newAddressMobile').value;
+      const pincode = document.getElementById('newAddressPincode').value;
+      const city = document.getElementById('newAddressCity').value;
+      const state = document.getElementById('newAddressState').value;
+      const house = document.getElementById('newAddressHouse').value;
+      
+      if (!name || !mobile || !pincode || !city || !state || !house) {
+        showToast('Please fill all fields', 'error');
+        return;
+      }
+      
+      if (!currentUser) {
+        showToast('Please login to save addresses', 'error');
+        return;
+      }
+      
+      const userRef = realtimeDB.ref('users/' + currentUser.uid);
+      
+      userRef.once('value').then(snapshot => {
+        const userData = snapshot.val();
+        const addresses = userData.addresses || [];
+        
+        addresses.push({
+          name,
+          mobile,
+          pincode,
+          city,
+          state,
+          house
+        });
+        
+        userRef.update({ addresses: addresses });
+        
+        showToast('Address saved successfully', 'success');
+        document.getElementById('addAddressModal').classList.remove('active');
+        
+        // Reset form
+        document.getElementById('newAddressName').value = '';
+        document.getElementById('newAddressMobile').value = '';
+        document.getElementById('newAddressPincode').value = '';
+        document.getElementById('newAddressCity').value = '';
+        document.getElementById('newAddressState').value = '';
+        document.getElementById('newAddressHouse').value = '';
+        
+        // Update UI
+        renderSavedAddresses(addresses);
+      });
+    });
+
+    // NEW: Cancel add address
+    document.getElementById('cancelAddAddress').addEventListener('click', function() {
+      document.getElementById('addAddressModal').classList.remove('active');
+    });
+
+    // NEW: Save profile information
+    document.getElementById('saveProfileInfo').addEventListener('click', function() {
+      if (!currentUser) return;
+      
+      const name = document.getElementById('profileFullName').value;
+      const phone = document.getElementById('profilePhone').value;
+      
+      const userRef = realtimeDB.ref('users/' + currentUser.uid);
+      
+      userRef.update({
+        name: name,
+        phone: phone
+      }).then(() => {
+        showToast('Profile updated successfully', 'success');
+        
+        // Update UI
+        document.getElementById('userName').textContent = name;
+        document.getElementById('mobileUserName').textContent = name;
+        document.getElementById('profileName').textContent = name;
+      }).catch(error => {
+        showToast('Error updating profile: ' + error.message, 'error');
+      });
+    });
+
+    /***********************
+     * Auto-save User Information
+     ***********************/
+
+    // NEW: Auto-save user information when filling the form
+    function setupAutoSave() {
+      const userInfoFields = ['fullname', 'mobile', 'pincode', 'city', 'state', 'house'];
+      
+      userInfoFields.forEach(field => {
+        const input = document.getElementById(field);
+        if (input) {
+          input.addEventListener('blur', function() {
+            if (currentUser && this.value) {
+              saveUserInfoToDatabase();
+            }
+          });
+        }
+      });
+    }
+
+    // NEW: Save user information to database
+    function saveUserInfoToDatabase() {
+      if (!currentUser) return;
+      
+      const fullname = document.getElementById('fullname').value;
+      const mobile = document.getElementById('mobile').value;
+      const pincode = document.getElementById('pincode').value;
+      const city = document.getElementById('city').value;
+      const state = document.getElementById('state').value;
+      const house = document.getElementById('house').value;
+      
+      // Only save if all fields are filled
+      if (!fullname || !mobile || !pincode || !city || !state || !house) {
+        return;
+      }
+      
+      const userRef = realtimeDB.ref('users/' + currentUser.uid);
+      
+      userRef.once('value').then(snapshot => {
+        const userData = snapshot.val();
+        const addresses = userData.addresses || [];
+        
+        // Check if this address already exists
+        const existingAddress = addresses.find(addr => 
+          addr.name === fullname && 
+          addr.mobile === mobile && 
+          addr.pincode === pincode && 
+          addr.city === city && 
+          addr.state === state && 
+          addr.house === house
+        );
+        
+        if (!existingAddress) {
+          // Add new address
+          addresses.push({
+            name: fullname,
+            mobile: mobile,
+            pincode: pincode,
+            city: city,
+            state: state,
+            house: house
+          });
+          
+          userRef.update({ addresses: addresses });
+        }
+      });
+    }
+
+    /***********************
+     * Initialize the Application
+     ***********************/
+
+    // Initialize when DOM is loaded
+    document.addEventListener('DOMContentLoaded', function() {
+      // Load products, categories, and advertisements
+      loadProductsFromRealtimeDB();
+      loadCategories();
+      loadAdBanners();
+      
+      // Setup search
+      setupSearch();
+      
+      // Load recently viewed from localStorage
+      const storedRecentlyViewed = localStorage.getItem('recently_viewed');
+      if (storedRecentlyViewed) {
+        recentlyViewed = JSON.parse(storedRecentlyViewed);
+        renderRecentlyViewed();
+      }
+      
+      // Setup auto-save for user information
+      setupAutoSave();
+      
+      // Check URL for product parameter
+      if (!checkUrlForProduct()) {
+        // Show home page if no product in URL
+        showPage('homePage');
+      }
+      
+      // Setup event listeners for auth modal
+      document.getElementById('authModalClose').addEventListener('click', closeLoginModal);
+      document.querySelectorAll('.auth-tab').forEach(tab => {
+        tab.addEventListener('click', () => switchAuthTab(tab.dataset.tab));
+      });
+      
+      // Setup event listeners for login buttons
+      document.getElementById('openLoginTop').addEventListener('click', showLoginModal);
+      document.getElementById('openUserProfileTop').addEventListener('click', function() {
+        showPage('userProfilePage');
+      });
+      
+      // Setup event listener for copy link button
+      document.getElementById('copyLinkBtn').addEventListener('click', function() {
+        const link = document.getElementById('productShareLink').textContent;
+        navigator.clipboard.writeText(link).then(() => {
+          showToast('Link copied to clipboard!', 'success');
+        }).catch(() => {
+          // Fallback for older browsers
+          const tempInput = document.createElement('input');
+          tempInput.value = link;
+          document.body.appendChild(tempInput);
+          tempInput.select();
+          document.execCommand('copy');
+          document.body.removeChild(tempInput);
+          showToast('Link copied to clipboard!', 'success');
+        });
+      });
+      
+      // Setup event listeners for forgot password modal
+      document.getElementById('forgotPasswordClose').addEventListener('click', function() {
+        document.getElementById('forgotPasswordModal').classList.remove('active');
+      });
+      
+      // Setup mobile menu
+      document.getElementById('menuIcon').addEventListener('click', openMenu);
+      document.getElementById('menuClose').addEventListener('click', closeMenu);
+      document.getElementById('menuOverlay').addEventListener('click', closeMenu);
+      
+      // Other existing event listeners...
+      // ... (rest of the existing initialization code)
+    });
+
+    // Other existing functions remain the same...
+    // ... (rest of the existing JavaScript code)
+
+  </script>
+</body>
+</html>
